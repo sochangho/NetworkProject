@@ -34,13 +34,20 @@ namespace Changho.Room
                PlayerEntry peGo = Instantiate(playerEntry);
                peGo.transform.parent = content;
                peGo.GetComponent<RectTransform>().localScale = Vector2.one;
-               object readyValue;
-               if(player.CustomProperties.TryGetValue( RoomPlayerData.READY , out readyValue))
-               {
-                    peGo.PlayerEntrySet(player.ActorNumber, player.NickName, false, (bool)readyValue);    
-               }
 
-                playerEntryList.Add(player.ActorNumber, peGo);
+               
+                
+                if(player.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+                {
+                    peGo.PlayerEntrySet(player.ActorNumber, player.NickName, player);
+
+                }
+                else
+                {
+                    peGo.LoadPlayerEntry(player.ActorNumber, player.NickName, player);
+                }
+
+               playerEntryList.Add(player.ActorNumber, peGo);
             }
 
 

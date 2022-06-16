@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using Photon.Pun;
+using Photon.Realtime;
 namespace Changho.UI
 {
 
@@ -17,18 +19,42 @@ namespace Changho.UI
         [SerializeField]
         private GameObject masterObject;
 
-        private int actornumber;
+        private int ownNumber;
 
-        public int ActorNumber { get; }
+        public int OwnNumber { get { return ownNumber; } }
 
 
-        public void PlayerEntrySet(int actornumber , string playername , bool master , bool ready)
+        public void PlayerEntrySet(int actornumber , string playername , Player player )
         {
-            this.actornumber = actornumber;
+
+
+            ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable();
+            properties.Add(ConfigData.READ, false);
+
+            player.SetCustomProperties(properties);
+
+           
+            this.ownNumber = actornumber;
             playerName.text = playername;
-            readyObject.SetActive(ready);
-            masterObject.SetActive(master);
-            
+            readyObject.SetActive(false);
+            masterObject.SetActive(player.IsMasterClient);
+
+
+        }
+
+        public void LoadPlayerEntry(int actornumber , string playername ,Player player)
+        {
+            object is_ready;
+            if(player.CustomProperties.TryGetValue(ConfigData.READ ,out is_ready))
+            {
+                this.ownNumber = actornumber;
+                playerName.text = playername;
+                readyObject.SetActive((bool)is_ready);
+                
+            }
+
+            masterObject.SetActive(player.IsMasterClient);
+
         }
 
 
