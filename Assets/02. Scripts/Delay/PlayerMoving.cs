@@ -10,6 +10,8 @@ namespace Jiyeon
     {
         public float speed = 20f;
 
+        public int countKill;
+
         bool isHit;
         private Vector3 movement;
 
@@ -24,6 +26,9 @@ namespace Jiyeon
 
         private void Update()
         {
+            if (!photonView.IsMine)
+                return;
+
             float x = Input.GetAxisRaw("Horizontal");
             float z = Input.GetAxisRaw("Vertical");
 
@@ -69,7 +74,14 @@ namespace Jiyeon
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
-
+            if (stream.IsWriting)
+            {
+                stream.SendNext(countKill);
+            }
+            else
+            {
+                countKill = (int)stream.ReceiveNext();
+            }
         }
 
 
