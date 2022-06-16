@@ -24,28 +24,6 @@ namespace Changho.Managers {
 
 
 
-        public override void OnPlayerEnteredRoom(Player newPlayer)
-        {
-            
-        }
-
-        public override void OnPlayerLeftRoom(Player otherPlayer)
-        {
-           
-        }
-
-        public override void OnMasterClientSwitched(Player newMasterClient)
-        {
-           
-        }
-
-
-        public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
-        {
-            base.OnPlayerPropertiesUpdate(targetPlayer, changedProps);
-        }
-
-
 
         #endregion
     }
