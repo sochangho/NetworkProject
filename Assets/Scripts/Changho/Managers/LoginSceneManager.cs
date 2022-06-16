@@ -30,17 +30,11 @@ namespace Changho.Managers
         {
             Debug.Log(PhotonNetwork.LocalPlayer.NickName + " : Master Connect");
             iinfomation.ServerInfomation(PhotonNetwork.LocalPlayer.NickName + " : Master Connect");
-            PhotonNetwork.JoinLobby();
-        }
-
-        public override void OnJoinedLobby()
-        {
-        
-            Debug.Log(PhotonNetwork.LocalPlayer.NickName + " : JoinRoom");
-            iinfomation.ServerInfomation(PhotonNetwork.LocalPlayer.NickName + " : Join Room");
             TransitionScene("LobbyScene");
+            
         }
 
+  
 
         #endregion
 
