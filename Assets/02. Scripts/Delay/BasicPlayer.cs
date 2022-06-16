@@ -1,12 +1,19 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicPlayer : MonoBehaviour
+namespace Jiyeon
 {
+    public enum State { NOMAL, HIT, STUN, DEAD }
+    public class BasicPlayer : MonoBehaviour
+    {
+        public State state;
 
 
 
 
 
+
+
+    }
 }

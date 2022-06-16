@@ -1,47 +1,78 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 
-public class PlayerMoving : MonoBehaviour
+namespace Jiyeon
 {
-    public float speed = 20f;
-    private Vector3 movement;
-
-    private Animator anim;
-    private Rigidbody modelRigidBody;
-
-    private void Start()
+    public class PlayerMoving : MonoBehaviourPun, IPunObservable
     {
-        anim = GetComponent<Animator>();
-        modelRigidBody = GetComponent<Rigidbody>();
-    }
+        public float speed = 20f;
 
-    private void Update()
-    {
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        bool isHit;
+        private Vector3 movement;
 
-        movement = new Vector3(x, 0.0f, z).normalized * speed * Time.deltaTime;
-    }
+        private Animator anim;
+        private Rigidbody modelRigidBody;
 
-    private void FixedUpdate()
-    {
-        Move();
-    }
-
-    private void Move()
-    {
-        if (movement.magnitude < 0.01f)
+        private void Start()
         {
-            anim.SetBool("isRun", false);
-            return;
+            anim = GetComponent<Animator>();
+            modelRigidBody = GetComponent<Rigidbody>();
         }
 
-        modelRigidBody.velocity = movement;
-        modelRigidBody.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), 0.15f);
-        anim.SetBool("isRun", true);
+        private void Update()
+        {
+            float x = Input.GetAxisRaw("Horizontal");
+            float z = Input.GetAxisRaw("Vertical");
+
+            movement = new Vector3(x, 0.0f, z).normalized * speed * Time.deltaTime;
+        }
+
+        private void FixedUpdate()
+        {
+            Move();
+            DoSwing();
+        }
+
+        private void Move()
+        {
+            if (movement.magnitude < 0.01f)
+            {
+                anim.SetBool("isRun", false);
+                return;
+            }
+
+            modelRigidBody.velocity = movement;
+            modelRigidBody.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), 0.15f);
+            anim.SetBool("isRun", true);
+        }
+
+        public void DoSwing()
+        {
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButton(0))
+            {
+                anim.SetTrigger("doHit");
+                isHit = true;
+
+                Invoke("DoSwingOut", 0.4f);
+
+                //TODO: 스윙 애니메이션, 무적시간추가,
+            }
+        }
+
+        public void DoSwingOut()
+        {
+            isHit = false;
+        }
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+
+        }
+
+
     }
 
-
 }
-
