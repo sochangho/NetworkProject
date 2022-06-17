@@ -24,7 +24,9 @@ namespace Changho.Managers
 
         public void Start()
         {
+
            
+
         }
 
         #endregion
@@ -80,13 +82,16 @@ namespace Changho.Managers
             }
             lobbyEntrys.Clear();
 
+            Debug.Log("room Cnt " + roomList.Count);
 
             foreach(var room in roomList)
             {
-                if (!room.IsOpen || !room.IsVisible)
+                if (!room.IsOpen || !room.IsVisible )
                 {
                     continue;
                 }
+
+                
 
                 var lobbyGo = Instantiate(lobby.lobbyEntry);
                 lobbyGo.transform.parent = lobby.transform;
