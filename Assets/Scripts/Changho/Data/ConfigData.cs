@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class ConfigData : MonoBehaviour
 {
-    public const string READ = "ready";
+    public const string READY = "ready";
     public const string LOAD = "load";
 }

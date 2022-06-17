@@ -19,7 +19,12 @@ namespace Changho.Managers
         {
             base.Awake();
             lobby = FindObjectOfType<Lobby.Lobby>();
-            PhotonNetwork.JoinLobby();
+            
+        }
+
+        public void Start()
+        {
+           
         }
 
         #endregion
@@ -27,13 +32,16 @@ namespace Changho.Managers
 
         #region PhotonCallbacks
 
-
+        public override void OnConnectedToMaster()
+        {
+            PhotonNetwork.JoinLobby();
+        }
 
         public override void OnJoinedLobby()
         {
 
             Debug.Log(PhotonNetwork.LocalPlayer.NickName + " : JoinRoom");
-          
+            
 
         }
 
@@ -91,6 +99,7 @@ namespace Changho.Managers
 
                     if(room.PlayerCount < room.MaxPlayers)
                     {
+                        PhotonNetwork.LeaveLobby();
                         PhotonNetwork.JoinRoom(room.Name);
                     }
 
@@ -101,6 +110,12 @@ namespace Changho.Managers
 
 
 
+        }
+
+
+        public override void OnLeftLobby()
+        {
+            Debug.Log("룸 나가기");
         }
 
         #endregion
@@ -128,7 +143,7 @@ namespace Changho.Managers
 
         public void RandomMatch()
         {
-
+            PhotonNetwork.LeaveLobby();
             PhotonNetwork.JoinRandomRoom();
 
         }
@@ -136,6 +151,7 @@ namespace Changho.Managers
 
         public void LobbyExit()
         {
+            PhotonNetwork.LeaveLobby();
             PhotonNetwork.Disconnect();
             
         }
