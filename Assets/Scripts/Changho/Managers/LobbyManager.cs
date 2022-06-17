@@ -34,7 +34,7 @@ namespace Changho.Managers
 
             Debug.Log(PhotonNetwork.LocalPlayer.NickName + " : JoinRoom");
           
-
+            //ddd
         }
 
 
