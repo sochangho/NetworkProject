@@ -11,12 +11,13 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
     public float speed;
     private bool isHit;
+
     private bool isCanControll = true;
 
     Vector3 moveVec;
 
     Animator anim;
-
+    int kill;
 
 
 
@@ -36,7 +37,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         //    return;
 
         Moving();
-        photonView.RPC("DoSwing", RpcTarget.All);
+        DoSwing();
+        //photonView.RPC("DoSwing", RpcTarget.All);
     }
 
     public void Moving()
@@ -56,7 +58,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
     }
 
-    [PunRPC]
+    //[PunRPC]
     public void DoSwing()
     {
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButton(0))
@@ -80,16 +82,22 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
     private void OnCollisionEnter(Collision collision)
     {
+        //  Collider[] a= Physics.BoxCastAll();
         if (collision.gameObject.tag == "melee")
         {
+
             TakeHit();
         }
 
     }
+
+
+    //[RPC]
     public void TakeHit()
     {
 
         isCanControll = false;
+        anim.SetBool("isTakeHit", true);
 
 
     }
