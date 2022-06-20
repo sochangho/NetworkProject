@@ -17,7 +17,6 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     Vector3 moveVec;
 
     Animator anim;
-    int kill;
 
 
 
@@ -38,7 +37,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
         Moving();
         DoSwing();
-        //photonView.RPC("DoSwing", RpcTarget.All);
+
     }
 
     public void Moving()
@@ -54,6 +53,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             anim.SetBool("isRun", moveVec != Vector3.zero);
 
             transform.LookAt(transform.position + moveVec);
+
+
         }
 
     }
@@ -61,7 +62,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     //[PunRPC]
     public void DoSwing()
     {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButton(0))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             isCanControll = false;
             isHit = true;
@@ -72,6 +73,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
             Invoke("DoSwingOut", 0.6f);
         }
+
+
     }
 
     public void DoSwingOut()
@@ -92,7 +95,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     }
 
 
-    //[RPC]
+    //[PunRPC]
     public void TakeHit()
     {
 
