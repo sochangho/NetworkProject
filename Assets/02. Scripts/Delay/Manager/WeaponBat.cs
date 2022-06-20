@@ -16,7 +16,7 @@ namespace Jiyeon
 
         public float rate;
         public BoxCollider meleeArea;
-        public TrailRenderer trailEffect;
+        // public TrailRenderer trailEffect;
 
         public void Use()
         {
@@ -28,11 +28,11 @@ namespace Jiyeon
         {
 
             meleeArea.enabled = true;
-            trailEffect.enabled = true;
+            //trailEffect.enabled = true;
 
             yield return new WaitForSeconds(0.3f);
             meleeArea.enabled = false;
-            trailEffect.enabled = false;
+            //trailEffect.enabled = false;
 
 
         }
