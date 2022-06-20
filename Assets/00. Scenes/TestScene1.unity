@@ -635,9 +635,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1585634784}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb59612deeaed6447b2c5293295aebd4, type: 3}
+  m_Script: {fileID: 11500000, guid: c4ba59d77434b77459167e55efa3bd59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rankingPanel: {fileID: 1697700598}
+  playerNamePrefeb: {fileID: 3617795392310980425, guid: a8d68ad02a90cf740929d6b74cae6177,
+    type: 3}
+  playerList: []
 --- !u!114 &1585634786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -647,12 +651,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1585634784}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90a5d46e288bda84aafd90dd8b8ad94f, type: 3}
+  m_Script: {fileID: 11500000, guid: 602eab2af40906c42b62ea2c034b0614, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   rankingPanel: {fileID: 1697700598}
   playerNamePrefeb: {fileID: 3617795392310980425, guid: 6cbbd9896eca1364ba0d37211b000723,
     type: 3}
+=======
+  chatList: []
+  chatButton: {fileID: 0}
+  chatLog: {fileID: 0}
+  chatingList: {fileID: 0}
+  inputField: {fileID: 0}
+  scroll_rect: {fileID: 0}
+>>>>>>> hanseongjun
 --- !u!4 &1585634787
 Transform:
   m_ObjectHideFlags: 0
