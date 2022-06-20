@@ -43,10 +43,13 @@ namespace Changho.Room
         [SerializeField]
         private RenderTextureValue[] renderTextures;
 
-       
+        public PlayerOwnEntry playerOwnEntry;
 
         public void CharaterInit(Dictionary<int , PlayerEntry> entryFairs)
         {
+            renderTextures[0].camera = playerOwnEntry.ownPlayerCamera; 
+            playerOwnEntry.CharecterSet(renderTextures[0]);
+
 
             int i = 1;
             foreach(var entryFair in entryFairs)
@@ -95,12 +98,16 @@ namespace Changho.Room
 
         public void CharacterChange(PlayerEntry entry)
         {
+            
            var renderTextureValue = entry.GetRenderTextureValue();
 
            CharacterType characterType =  entry.characterType;
-           string path = string.Format("Changho/Character/{0}", characterType.ToString());
-           GameObject gameObject= Resources.Load<GameObject>(path);
-           renderTextureValue.camera.GetComponent<RenderTextureCamera>().CharacterChange(gameObject);
+           string path = string.Format("Changho/Prefaps/Characters/{0}", characterType.ToString());
+         
+           GameObject go= Resources.Load<GameObject>(path);
+
+            Debug.Log(go);
+           renderTextureValue.camera.GetComponent<RenderTextureCamera>().CharacterChange(go);
 
         }
 

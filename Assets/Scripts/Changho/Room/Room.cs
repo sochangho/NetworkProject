@@ -17,14 +17,14 @@ namespace Changho.Room
 
 
         //Buttons---------------------------------------
-        [SerializeField]
-        private Button buttonGameStart;
+        
+        public Button buttonGameStart;
 
-        [SerializeField]
-        private Button buttonReady;
+        
+        public Button buttonReady;
 
-        [SerializeField]
-        private Button buttonExit;
+        
+        public Button buttonExit;
         //--------------------------------------------------
 
 
@@ -161,12 +161,7 @@ namespace Changho.Room
         // 여기서 부터......
         public void PlayerUpdate(Player target , ExitGames.Client.Photon.Hashtable changedProps)
         {
-            if (!changedProps.ContainsKey(ConfigData.READY))
-            {
-                Debug.LogError("PlayerUpdate : Error");
-                return;
-            }
-
+            
 
             if ((PhotonNetwork.LocalPlayer.ActorNumber != target.ActorNumber) && !playerEntryDic.ContainsKey(target.ActorNumber))
             {
@@ -174,21 +169,56 @@ namespace Changho.Room
                 return;
             }
 
-            bool ready = (bool)changedProps[ConfigData.READY];
+            ReadyUpdate(target, changedProps);
+            CharacterUpdate(target, changedProps);
+            
+        }
 
-            if (target.ActorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
+        private void CharacterUpdate(Player target, ExitGames.Client.Photon.Hashtable changedProps)
+        {
+
+            if (changedProps.ContainsKey(ConfigData.CHARACTER))
             {
-                playerEntryDic[target.ActorNumber].ReadySet(ready);
+                CharacterType type = (CharacterType)changedProps[ConfigData.CHARACTER];
+
+
+                if (target.ActorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
+                {
+                    playerEntryDic[target.ActorNumber].characterType = type; 
+                    CharactersCamRender.Instance.CharacterChange(playerEntryDic[target.ActorNumber]);
+                }
+                else
+                {
+                    ownEntry.characterType = type;
+                    CharactersCamRender.Instance.CharacterChange(ownEntry);
+                }
+
+
             }
-            else
+
+        }
+        
+        private void ReadyUpdate(Player target, ExitGames.Client.Photon.Hashtable changedProps)
+        {
+
+            if (changedProps.ContainsKey(ConfigData.READY))
             {
-                ownEntry.ReadySet(ready);
+                bool ready = (bool)changedProps[ConfigData.READY];
+
+                if (target.ActorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
+                {
+                    playerEntryDic[target.ActorNumber].ReadySet(ready);
+                }
+                else
+                {
+                    ownEntry.ReadySet(ready);
+                }
+                ReadyCheck();
             }
-            ReadyCheck();
         }
 
 
-        
+
         private void PlayerEntryDicAllDelete()
         {
            foreach(var  pd in playerEntryDic)
