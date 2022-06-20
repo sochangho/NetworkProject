@@ -73,47 +73,62 @@ namespace Changho.Managers
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
         {
             Debug.Log("로비 업데이트");
-            List<LobbyEntry> lobbyEntrys = lobby.lobbyEntrys;
+            Dictionary<string , RoomEntry> roomEntrys = lobby.lobbyEntrys;
 
-            for(int i = 0; i < lobbyEntrys.Count; i++)
-            {
-                Destroy(lobbyEntrys[i].gameObject);
-
-            }
-            lobbyEntrys.Clear();
-
-            Debug.Log("room Cnt " + roomList.Count);
+     
 
             foreach(var room in roomList)
             {
-                if (!room.IsOpen || !room.IsVisible )
+                if (!room.IsOpen || !room.IsVisible || room.RemovedFromList)
                 {
-                    continue;
+                    if (roomEntrys.ContainsKey(room.Name))
+                    {
+                        Destroy(roomEntrys[room.Name].gameObject);
+                        roomEntrys.Remove(room.Name);
+                        continue;
+                    }
+
+                }
+                else
+                {
+
+                    string roomName = (string)room.CustomProperties[ROOM_NAME];
+                    string players = string.Format("{0} / {1}", room.PlayerCount, room.MaxPlayers);
+                    string roomID = room.Name;
+
+                    if (roomEntrys.ContainsKey(room.Name))
+                    {
+
+                        roomEntrys[room.Name].RoomValueUpdate(roomName, players);
+
+                    }
+                    else
+                    {
+                        var rooGo = Instantiate(lobby.lobbyEntry);
+                        rooGo.transform.parent = lobby.transform;
+
+
+                        rooGo.EntrySetting(roomName, players, () => {
+
+                            if (room.PlayerCount < room.MaxPlayers)
+                            {
+                                PhotonNetwork.LeaveLobby();
+                                PhotonNetwork.JoinRoom(room.Name);
+                            }
+
+
+                        });
+
+
+                        roomEntrys.Add(room.Name, rooGo);
+                    }
+                  
                 }
 
                 
 
-                var lobbyGo = Instantiate(lobby.lobbyEntry);
-                lobbyGo.transform.parent = lobby.transform;
-
-                string roomName = (string)room.CustomProperties[ROOM_NAME];
-                string players = string.Format("{0} / {1}", room.PlayerCount, room.MaxPlayers);
-
-
-                lobbyGo.EntrySetting(roomName, players, () => {
-
-                    if(room.PlayerCount < room.MaxPlayers)
-                    {
-                        PhotonNetwork.LeaveLobby();
-                        PhotonNetwork.JoinRoom(room.Name);
-                    }
-
-                   
-                });
+              
             }
-
-
-
 
         }
 

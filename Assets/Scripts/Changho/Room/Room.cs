@@ -34,8 +34,16 @@ namespace Changho.Room
 
         [SerializeField]
         private PlayerEntry playerEntry;
+
+        [SerializeField]
+        private PlayerOwnEntry ownEntry;
+
+        
+
+
         private Dictionary<int , PlayerEntry> playerEntryDic = new Dictionary<int, PlayerEntry>();
 
+      
 
         private void Awake()
         {
@@ -45,24 +53,28 @@ namespace Changho.Room
 
             foreach(Player player in PhotonNetwork.PlayerList)
             {
-               PlayerEntry peGo = Instantiate(playerEntry);
-               peGo.transform.parent = content;
-               peGo.GetComponent<RectTransform>().localScale = Vector2.one;
-
                
-                
+                               
                 if(player.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
                 {
-                    peGo.PlayerEntrySet(player.ActorNumber, player.NickName, player);
+                    ownEntry.PlayerEntrySet(player.ActorNumber, player.NickName, player);
 
                 }
                 else
                 {
+                    PlayerEntry peGo = Instantiate(playerEntry);
+                    peGo.transform.parent = content;
+                    peGo.GetComponent<RectTransform>().localScale = Vector2.one;
                     peGo.LoadPlayerEntry(player.ActorNumber, player.NickName, player);
+                    playerEntryDic.Add(player.ActorNumber, peGo);
                 }
 
-               playerEntryDic.Add(player.ActorNumber, peGo);
+               
             }
+
+
+
+            CharactersCamRender.Instance.CharaterInit(playerEntryDic);
 
             buttonGameStart.onClick.AddListener(OnClickGameStart);
             buttonReady.onClick.AddListener(OnClickReadyButton);
@@ -73,13 +85,30 @@ namespace Changho.Room
         public void ChangedMaster(Player newMasterClient)
         {
 
-           int num = newMasterClient.ActorNumber;
+            int num = newMasterClient.ActorNumber;
 
-            if (!playerEntryDic.ContainsKey(num))
+            if ((newMasterClient.ActorNumber != PhotonNetwork.LocalPlayer.ActorNumber) && !playerEntryDic.ContainsKey(num))
             {
                 Debug.LogError("ChangedMaster Error");
                 return;
             }
+
+
+            if (PhotonNetwork.LocalPlayer.ActorNumber == num)
+            {
+                ownEntry.MasterSet(true);
+
+                foreach (var pd in playerEntryDic)
+                {                                     
+                    pd.Value.MasterSet(false);                   
+                }
+                return;
+
+            }
+
+
+
+           
 
           
 
@@ -108,7 +137,7 @@ namespace Changho.Room
             peGo.GetComponent<RectTransform>().localScale = Vector2.one;
             peGo.PlayerEntrySet(newPlayer.ActorNumber, newPlayer.NickName, newPlayer);
             playerEntryDic.Add(newPlayer.ActorNumber, peGo);
-
+            CharactersCamRender.Instance.CharacterAdd(peGo);
 
         }
 
@@ -117,6 +146,7 @@ namespace Changho.Room
             if (playerEntryDic.ContainsKey(otherPlayer.ActorNumber)) {
 
                var go = playerEntryDic[otherPlayer.ActorNumber].gameObject;
+               CharactersCamRender.Instance.CharacterDelete(go.GetComponent<PlayerEntry>());
                Destroy(go);
                playerEntryDic.Remove(otherPlayer.ActorNumber);
             }
@@ -128,6 +158,7 @@ namespace Changho.Room
             ReadyCheck();
         }
 
+        // 여기서 부터......
         public void PlayerUpdate(Player target , ExitGames.Client.Photon.Hashtable changedProps)
         {
             if (!changedProps.ContainsKey(ConfigData.READY))
@@ -137,7 +168,7 @@ namespace Changho.Room
             }
 
 
-            if (!playerEntryDic.ContainsKey(target.ActorNumber))
+            if ((PhotonNetwork.LocalPlayer.ActorNumber != target.ActorNumber) && !playerEntryDic.ContainsKey(target.ActorNumber))
             {
                 Debug.LogError("PlayerUpdate : Error");
                 return;
@@ -145,7 +176,14 @@ namespace Changho.Room
 
             bool ready = (bool)changedProps[ConfigData.READY];
 
-            playerEntryDic[target.ActorNumber].ReadySet(ready);
+            if (target.ActorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
+            {
+                playerEntryDic[target.ActorNumber].ReadySet(ready);
+            }
+            else
+            {
+                ownEntry.ReadySet(ready);
+            }
             ReadyCheck();
         }
 
@@ -166,6 +204,9 @@ namespace Changho.Room
         private void ReadyCheck()
         {
             int count = 0;
+
+            
+
             foreach(Player player  in PhotonNetwork.PlayerList)
             {
                var prop = player.CustomProperties;
@@ -188,7 +229,7 @@ namespace Changho.Room
 
             bool check = false;
 
-            if(count == PhotonNetwork.PlayerList.Length && PhotonNetwork.LocalPlayer.IsMasterClient)
+            if(count == PhotonNetwork.PlayerList.Length && PhotonNetwork.LocalPlayer.IsMasterClient && count > 1)
             {
 
                 check = true;
@@ -211,21 +252,18 @@ namespace Changho.Room
 
         private void OnClickReadyButton()
         {
-            int localNum = PhotonNetwork.LocalPlayer.ActorNumber;
-            if (!playerEntryDic.ContainsKey(localNum))
-            {
-                Debug.LogError("ReadyButtonCilck Error");
-                return;
-            }
 
-            playerEntryDic[localNum].isReady = !playerEntryDic[localNum].isReady;
-            bool isready = playerEntryDic[localNum].isReady;
+
+            ownEntry.isReady = !ownEntry.isReady;
+
+            bool ownReady = ownEntry.isReady;
+
             ExitGames.Client.Photon.Hashtable properties 
                 = new ExitGames.Client.Photon.Hashtable() {
-                    { ConfigData.READY , isready } };
+                    { ConfigData.READY , ownReady } };
 
 
-            playerEntryDic[localNum].ReadySet(isready);
+            ownEntry.ReadySet(ownReady);
 
             PhotonNetwork.LocalPlayer.SetCustomProperties(properties);
 
