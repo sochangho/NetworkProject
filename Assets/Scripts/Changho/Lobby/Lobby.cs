@@ -11,8 +11,8 @@ namespace Changho.Lobby
     {
         private LobbyManager lobbyManager;
 
-        public LobbyEntry lobbyEntry;
-        public List<LobbyEntry> lobbyEntrys;
+        public RoomEntry lobbyEntry;
+        public Dictionary<string,RoomEntry> lobbyEntrys = new Dictionary<string, RoomEntry>();
 
         //Buttons
         [SerializeField]

@@ -7,11 +7,11 @@ namespace Jiyeon
 {
     public class WeaponBat : MonoBehaviour
     {
-        public static Action target;
-
+        public PlayerController playerController;
+        public static Action batUse;
         private void Awake()
         {
-            target = () => { Use(); };
+            batUse = () => { Use(); };
         }
 
         public float rate;
@@ -34,7 +34,14 @@ namespace Jiyeon
             meleeArea.enabled = false;
             //trailEffect.enabled = false;
 
+        }
 
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.tag == "Player")
+            {
+                //킬카운트 증가
+            }
         }
 
     }

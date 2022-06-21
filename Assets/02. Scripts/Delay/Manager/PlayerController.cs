@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public float speed;
     private bool isHit;
 
+    public int killCount;
+
     private bool isCanControll = true;
 
     Vector3 moveVec;
@@ -36,7 +38,18 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         //    return;
 
         Moving();
-        DoSwing();
+        //DoSwing();
+
+    }
+
+    private void Update()
+    {
+        if (!photonView.IsMine)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            photonView.RPC("DoSwing", RpcTarget.All);
+
 
     }
 
@@ -62,17 +75,14 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     //[PunRPC]
     public void DoSwing()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            isCanControll = false;
-            isHit = true;
+        isCanControll = false;
 
-            anim.SetTrigger("doHit");
-            WeaponBat.target(); // WeaponBat.Use()
+        anim.SetTrigger("doHit");
+        WeaponBat.batUse(); // WeaponBat.Use()
+
+        Invoke("DoSwingOut", 0.6f);
 
 
-            Invoke("DoSwingOut", 0.6f);
-        }
 
 
     }
@@ -83,13 +93,17 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         isCanControll = true;
     }
 
+
+
+
+
+
     private void OnCollisionEnter(Collision collision)
     {
         //  Collider[] a= Physics.BoxCastAll();
         if (collision.gameObject.tag == "melee")
         {
-
-            TakeHit();
+            photonView.RPC("TakeHit", RpcTarget.All);
         }
 
     }

@@ -35,6 +35,7 @@ namespace Changho.Managers {
 
         public override void OnLeftRoom()
         {
+
             TransitionScene("LobbyScene");
             
         }
