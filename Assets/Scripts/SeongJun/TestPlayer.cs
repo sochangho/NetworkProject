@@ -54,8 +54,8 @@ namespace SeongJun {
                    && ranking > KillManager.Instance.playerList[i].gameObject.GetComponent<TestPlayer>().ranking)
                 {
                     ranking--;
-                    StopCoroutine(MoveUP(i));
-                    StartCoroutine(MoveUP(i));
+                    //StopCoroutine(MoveUP(i));
+                    //StartCoroutine(MoveUP(i));
                     KillManager.Instance.playerList[i].gameObject.GetComponent<TestPlayer>().ranking++;
                 }
             }
