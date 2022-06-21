@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     Animator anim;
     Rigidbody rigid;
 
+    Collider other;
     public WeaponBat bat;
 
 
@@ -109,7 +110,9 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
         if (collider.gameObject.tag == "Melee")
         {
+            other = collider;
             photonView.RPC("TakeHit", RpcTarget.All);
+
         }
 
     }
@@ -123,7 +126,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
 
         anim.SetBool("isTakeHit", true);
-        rigid.AddForce(Vector3.up * 3, ForceMode.Impulse);
+        rigid.AddForce(other.transform.forward * 3, ForceMode.Impulse);
         Invoke("TakeHitOut", 3.0f);
     }
     public void TakeHitOut()
