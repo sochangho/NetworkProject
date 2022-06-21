@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/00. Scenes/RoomScene.unity
     guid: 3eb9e1fc7b7166645b2c28a82ef2aed5
   - enabled: 1
-    path: Assets/00. Scenes/ChanghoMap_Cube.unity
-    guid: 4daaa3873d072724895cf4b444b787d6
+    path: Assets/00. Scenes/ChanghoMap_Cube 1.unity
+    guid: b9e48feac940792478b658cdef16e4a3
   m_configObjects: {}

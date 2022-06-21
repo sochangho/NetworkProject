@@ -603,7 +603,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
-  killCount: 0
+  bat: {fileID: 7397000546261269826}
 --- !u!114 &5985156112704976614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -661,19 +661,19 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: isRun
   - Type: 9
     SynchronizeType: 0
     Name: doHit
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: isTakeHit
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: isHit
   m_SynchronizeLayers:
-  - SynchronizeType: 0
+  - SynchronizeType: 1
     LayerIndex: 0
 --- !u!114 &-5540988930323532541
 MonoBehaviour:
@@ -1086,7 +1086,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15e773101887c7446aecc0e1b647f270, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 0}
   rate: 0
   meleeArea: {fileID: 17957018939059170}
 --- !u!1 &6661733640037208949

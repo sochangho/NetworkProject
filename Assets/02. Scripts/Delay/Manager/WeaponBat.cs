@@ -7,13 +7,6 @@ namespace Jiyeon
 {
     public class WeaponBat : MonoBehaviour
     {
-        public PlayerController playerController;
-        public static Action batUse;
-        private void Awake()
-        {
-            batUse = () => { Use(); };
-        }
-
         public float rate;
         public BoxCollider meleeArea;
         // public TrailRenderer trailEffect;

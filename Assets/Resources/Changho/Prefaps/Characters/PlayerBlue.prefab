@@ -506,7 +506,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
-  killCount: 0
+  bat: {fileID: 8210536859789967774}
 --- !u!114 &4925047715282553402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1086,7 +1086,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15e773101887c7446aecc0e1b647f270, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 0}
   rate: 0
   meleeArea: {fileID: 1686889275395397438}
 --- !u!1 &5415007324601167785

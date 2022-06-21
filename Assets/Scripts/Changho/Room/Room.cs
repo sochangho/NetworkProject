@@ -17,13 +17,13 @@ namespace Changho.Room
 
 
         //Buttons---------------------------------------
-        
+
         public Button buttonGameStart;
 
-        
+
         public Button buttonReady;
 
-        
+
         public Button buttonExit;
         //--------------------------------------------------
 
@@ -38,12 +38,12 @@ namespace Changho.Room
         [SerializeField]
         private PlayerOwnEntry ownEntry;
 
-        
 
 
-        private Dictionary<int , PlayerEntry> playerEntryDic = new Dictionary<int, PlayerEntry>();
 
-      
+        private Dictionary<int, PlayerEntry> playerEntryDic = new Dictionary<int, PlayerEntry>();
+
+
 
         private void Awake()
         {
@@ -51,11 +51,11 @@ namespace Changho.Room
 
             roomManager.room = this;
 
-            foreach(Player player in PhotonNetwork.PlayerList)
+            foreach (Player player in PhotonNetwork.PlayerList)
             {
-               
-                               
-                if(player.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+
+
+                if (player.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
                 {
                     ownEntry.PlayerEntrySet(player.ActorNumber, player.NickName, player);
 
@@ -69,7 +69,7 @@ namespace Changho.Room
                     playerEntryDic.Add(player.ActorNumber, peGo);
                 }
 
-               
+
             }
 
 
@@ -79,7 +79,7 @@ namespace Changho.Room
             buttonGameStart.onClick.AddListener(OnClickGameStart);
             buttonReady.onClick.AddListener(OnClickReadyButton);
             buttonExit.onClick.AddListener(OnCilckExitRoom);
-           
+
         }
 
         public void ChangedMaster(Player newMasterClient)
@@ -99,8 +99,8 @@ namespace Changho.Room
                 ownEntry.MasterSet(true);
 
                 foreach (var pd in playerEntryDic)
-                {                                     
-                    pd.Value.MasterSet(false);                   
+                {
+                    pd.Value.MasterSet(false);
                 }
                 return;
 
@@ -108,13 +108,13 @@ namespace Changho.Room
 
 
 
-           
 
-          
 
-            foreach(var  pd in playerEntryDic)
+
+
+            foreach (var pd in playerEntryDic)
             {
-               if(pd.Key == num)
+                if (pd.Key == num)
                 {
                     pd.Value.MasterSet(true);
                 }
@@ -143,12 +143,13 @@ namespace Changho.Room
 
         public void ExitPlayer(Player otherPlayer)
         {
-            if (playerEntryDic.ContainsKey(otherPlayer.ActorNumber)) {
+            if (playerEntryDic.ContainsKey(otherPlayer.ActorNumber))
+            {
 
-               var go = playerEntryDic[otherPlayer.ActorNumber].gameObject;
-               CharactersCamRender.Instance.CharacterDelete(go.GetComponent<PlayerEntry>());
-               Destroy(go);
-               playerEntryDic.Remove(otherPlayer.ActorNumber);
+                var go = playerEntryDic[otherPlayer.ActorNumber].gameObject;
+                CharactersCamRender.Instance.CharacterDelete(go.GetComponent<PlayerEntry>());
+                Destroy(go);
+                playerEntryDic.Remove(otherPlayer.ActorNumber);
             }
             else
             {
@@ -159,9 +160,9 @@ namespace Changho.Room
         }
 
         // 여기서 부터......
-        public void PlayerUpdate(Player target , ExitGames.Client.Photon.Hashtable changedProps)
+        public void PlayerUpdate(Player target, ExitGames.Client.Photon.Hashtable changedProps)
         {
-            
+
 
             if ((PhotonNetwork.LocalPlayer.ActorNumber != target.ActorNumber) && !playerEntryDic.ContainsKey(target.ActorNumber))
             {
@@ -171,7 +172,7 @@ namespace Changho.Room
 
             ReadyUpdate(target, changedProps);
             CharacterUpdate(target, changedProps);
-            
+
         }
 
         private void CharacterUpdate(Player target, ExitGames.Client.Photon.Hashtable changedProps)
@@ -184,7 +185,7 @@ namespace Changho.Room
 
                 if (target.ActorNumber != PhotonNetwork.LocalPlayer.ActorNumber)
                 {
-                    playerEntryDic[target.ActorNumber].characterType = type; 
+                    playerEntryDic[target.ActorNumber].characterType = type;
                     CharactersCamRender.Instance.CharacterChange(playerEntryDic[target.ActorNumber]);
                 }
                 else
@@ -197,7 +198,7 @@ namespace Changho.Room
             }
 
         }
-        
+
         private void ReadyUpdate(Player target, ExitGames.Client.Photon.Hashtable changedProps)
         {
 
@@ -221,7 +222,7 @@ namespace Changho.Room
 
         private void PlayerEntryDicAllDelete()
         {
-           foreach(var  pd in playerEntryDic)
+            foreach (var pd in playerEntryDic)
             {
                 Destroy(pd.Value.gameObject);
             }
@@ -235,12 +236,12 @@ namespace Changho.Room
         {
             int count = 0;
 
-            
 
-            foreach(Player player  in PhotonNetwork.PlayerList)
+
+            foreach (Player player in PhotonNetwork.PlayerList)
             {
-               var prop = player.CustomProperties;
-               
+                var prop = player.CustomProperties;
+
                 if (!prop.ContainsKey(ConfigData.READY))
                 {
                     Debug.LogError(" ReadyPlayer Error : ");
@@ -254,17 +255,17 @@ namespace Changho.Room
                     count++;
                 }
 
-               
+
             }
 
             bool check = false;
 
-            if(count == PhotonNetwork.PlayerList.Length && PhotonNetwork.LocalPlayer.IsMasterClient && count > 1)
+            if (count == PhotonNetwork.PlayerList.Length && PhotonNetwork.LocalPlayer.IsMasterClient && count > 1)
             {
 
                 check = true;
             }
-            
+
 
             buttonGameStart.gameObject.SetActive(check);
 
@@ -277,7 +278,7 @@ namespace Changho.Room
         private void OnCilckExitRoom()
         {
             PhotonNetwork.LeaveRoom();
-            
+
         }
 
         private void OnClickReadyButton()
@@ -288,7 +289,7 @@ namespace Changho.Room
 
             bool ownReady = ownEntry.isReady;
 
-            ExitGames.Client.Photon.Hashtable properties 
+            ExitGames.Client.Photon.Hashtable properties
                 = new ExitGames.Client.Photon.Hashtable() {
                     { ConfigData.READY , ownReady } };
 
@@ -307,7 +308,7 @@ namespace Changho.Room
             PhotonNetwork.CurrentRoom.IsVisible = false;
 
 
-            PhotonNetwork.LoadLevel("ChanghoMap_Cube");
+            PhotonNetwork.LoadLevel("ChanghoMap_Cube 1");
 
 
         }
@@ -315,5 +316,5 @@ namespace Changho.Room
     }
 
 
-  
+
 }
