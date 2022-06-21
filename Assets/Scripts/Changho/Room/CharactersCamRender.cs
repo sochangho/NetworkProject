@@ -102,11 +102,31 @@ namespace Changho.Room
            var renderTextureValue = entry.GetRenderTextureValue();
 
            CharacterType characterType =  entry.characterType;
-           string path = string.Format("Changho/Prefaps/Characters/{0}", characterType.ToString());
          
-           GameObject go= Resources.Load<GameObject>(path);
 
-            Debug.Log(go);
+            GameObject go = null ;
+
+            Changho.Data.CharaterInfo[] charaterInfos = Resources.LoadAll<Changho.Data.CharaterInfo>("Changho/Prefaps/Characters");
+
+           
+
+            foreach(var charaterInfo in charaterInfos)
+            {
+                if(charaterInfo.characterType == characterType)
+                {
+                    go = charaterInfo.gameObject;
+                    
+                }
+
+            }
+
+           
+            if(go == null)
+            {
+
+                Debug.LogError("캐릭터 생성 애러");
+                return;
+            }
            renderTextureValue.camera.GetComponent<RenderTextureCamera>().CharacterChange(go);
 
         }

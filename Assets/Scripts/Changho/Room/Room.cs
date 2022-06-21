@@ -303,6 +303,12 @@ namespace Changho.Room
         private void OnClickGameStart()
         {
 
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.CurrentRoom.IsVisible = false;
+
+
+            PhotonNetwork.LoadLevel("ChanghoGameInScene");
+
 
         }
 

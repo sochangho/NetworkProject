@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+
+using Changho.Data;
+
+
 namespace Changho.UI
 {
     public class SelectEntry : MonoBehaviour
@@ -15,10 +19,14 @@ namespace Changho.UI
 
         public Text selectTex;
 
+        [SerializeField]
+        private Transform characterTransform;
+        
         private void Start()
         {
 
             selectButton.onClick.AddListener(OnClickSelect);
+            CreateCharacter();
 
         }
 
@@ -51,6 +59,38 @@ namespace Changho.UI
 
        
         }
+
+
+        public void CreateCharacter()
+        {
+
+
+            
+
+            CharaterInfo[] charaterInfos =  Resources.LoadAll<CharaterInfo>("Changho/Prefaps/Characters");
+
+
+            Debug.Log(charaterInfos.Length);
+
+          foreach(var characterInfo in charaterInfos)
+            {
+                if(characterInfo.characterType == type)
+                {
+                    
+                   GameObject obj  = Instantiate(characterInfo).gameObject;
+                   obj.transform.parent = characterTransform;
+                   obj.transform.localPosition = Vector3.zero;
+                   obj.transform.localScale = Vector3.one;
+                   obj.layer = 5;
+                   break;
+                }
+
+
+            }
+
+
+        }
+
 
     }
 }
