@@ -7,6 +7,7 @@ namespace Jiyeon
 {
     public class WeaponBat : MonoBehaviour
     {
+        public PlayerController playerController;
         public static Action batUse;
         private void Awake()
         {
