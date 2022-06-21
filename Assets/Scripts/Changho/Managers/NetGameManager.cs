@@ -15,7 +15,7 @@ namespace Changho.Managers
 
         private void Start()
         {
-
+            Debug.Log("dddddd");
             GameOwnPlayerInit();
         }
 
@@ -25,10 +25,12 @@ namespace Changho.Managers
 
         public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
         {
-            if (changedProps.ContainsKey(GameData.PLAYER_LOAD))
+
+            if (changedProps.ContainsKey(ConfigData.LOAD))
             {
                 if (CheckAllPlayerLoadLevel())
                 {
+                   
                     //게임시작
                     CreateCharacters();
                 }
@@ -49,9 +51,12 @@ namespace Changho.Managers
            var localProps = PhotonNetwork.LocalPlayer.CustomProperties;
            ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
 
-            props.Add(ConfigData.CHARACTER, localProps[ConfigData.CHARACTER]);
-            props.Add(ConfigData.LOAD, true);
+           props.Add(ConfigData.CHARACTER, localProps[ConfigData.CHARACTER]);
+           props.Add(ConfigData.LOAD, true);
 
+           PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+
+         
         }
 
 
@@ -66,8 +71,20 @@ namespace Changho.Managers
                 return;
             }
 
-            int number = PhotonNetwork.LocalPlayer.GetPlayerNumber();
-            PhotonNetwork.Instantiate(playerName, characterSpwanList[number].position, characterSpwanList[number].rotation);
+            int index = 0;
+            for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+            {
+                if(PhotonNetwork.LocalPlayer.ActorNumber == PhotonNetwork.PlayerList[i].ActorNumber)
+                {
+                    index = i;
+                }
+
+            }
+
+
+
+            string path = string.Format("Changho/Prefaps/Characters/{0}",playerName);
+            PhotonNetwork.Instantiate(path, characterSpwanList[index].position, characterSpwanList[index].rotation);
 
 
         }
