@@ -149,7 +149,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   kill: 0
   ranking: 0
-  playerText: {fileID: 3617795392233147596}
+  playerNameText: {fileID: 3617795392233147596}
   killText: {fileID: 7212901674393974158}
 --- !u!114 &6649693180754357405
 MonoBehaviour:

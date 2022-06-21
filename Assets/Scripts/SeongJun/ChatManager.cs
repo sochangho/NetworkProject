@@ -12,7 +12,7 @@ public class ChatManager : MonoBehaviourPunCallbacks
     public Text chatLog;
     public Text chatingList;
     public InputField inputField;
-    public ScrollRect scroll_rect;
+    public ScrollRect scroll_rect = null;
     string chatters;
     void Start()
     {
@@ -26,7 +26,10 @@ public class ChatManager : MonoBehaviourPunCallbacks
         }
     }
     public void ChatButtonOnClicked() {
-        if (inputField.text.Equals("")) { return; }
+    //   if (inputField.text.Equals("")) 
+    //   { 
+    //       return;
+    //   }
 
         string text = string.Format("{0} : {1}",PhotonNetwork.LocalPlayer.NickName,inputField.text);
         photonView.RPC("Receive",RpcTarget.All,text);

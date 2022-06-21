@@ -31,35 +31,13 @@ namespace SeongJun {
         }
         private void Update()
         {
-          //  if (!photonView.IsMine)
-          //      return;
-
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                playerList[0].gameObject.GetComponent<TestPlayer>().kill++;
-                photonView.RPC("RankingCheck", RpcTarget.All);
-                for (int i = 0; i < playerList.Count; i++)
-                {
-                    playerList[i].gameObject.GetComponent<TestPlayer>().test();
-                } 
+                //코드 합칠때 이거만 플레이어가 공격해서 다른 플레이어가 맞았을때 실행되게 하면 될듯?
+                playerList[0].gameObject.GetComponent<TestPlayer>().test();
             }
         }
-        [PunRPC]
-         void RankingCheck()
-        {
-            int max = -1;
-            for (int i = 0; i < playerList.Count; i++)
-            {
-                for (int j = 0; j < playerList.Count; j++)
-                {
-                    if (playerList[i].gameObject.GetComponent<TestPlayer>().ranking > playerList[j].gameObject.GetComponent<TestPlayer>().ranking&& playerList[i].gameObject.GetComponent<TestPlayer>().kill > playerList[j].gameObject.GetComponent<TestPlayer>().kill)
-                    {
-                        playerList[i].gameObject.GetComponent<TestPlayer>().ranking--;
-                        playerList[j].gameObject.GetComponent<TestPlayer>().ranking++;
-                    }
-                }
-            }
-        }
+    
         public void IsDead()
         {
             //마지막으로 때린 사람 기억하고.
