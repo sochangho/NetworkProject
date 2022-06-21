@@ -78,9 +78,12 @@ namespace Changho.UI
                 {
                     
                    GameObject obj  = Instantiate(characterInfo).gameObject;
+                   obj.GetComponent<Rigidbody>().useGravity = false;
+                    obj.GetComponent<CapsuleCollider>().enabled = false;
                    obj.transform.parent = characterTransform;
                    obj.transform.localPosition = Vector3.zero;
                    obj.transform.localScale = Vector3.one;
+                   obj.transform.localRotation = Quaternion.Euler(0, 0, 0);
                    obj.layer = 5;
                    break;
                 }

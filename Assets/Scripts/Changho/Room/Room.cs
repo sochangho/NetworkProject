@@ -307,7 +307,7 @@ namespace Changho.Room
             PhotonNetwork.CurrentRoom.IsVisible = false;
 
 
-            PhotonNetwork.LoadLevel("ChanghoGameInScene");
+            PhotonNetwork.LoadLevel("ChanghoMap_Cube");
 
 
         }

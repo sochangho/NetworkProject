@@ -15,7 +15,7 @@ public enum CharacterType
      type1,
      type2,
      type3,
-
+     type4
 
     
 }
