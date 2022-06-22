@@ -7,6 +7,7 @@ public class ConfigData
     public const string READY = "ready";
     public const string LOAD = "load";
     public const string CHARACTER = "character";
+    public const string Exit = "exit";
 }
 
 

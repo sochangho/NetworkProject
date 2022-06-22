@@ -6,16 +6,31 @@ using Photon.Realtime;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 
+using Changho.UI;
+
+
 namespace Changho.Managers
 {
     public class NetGameManager : GamePhotonManager<NetGameManager>
     {
+        public int count;
+        public int gamePlayTime;
 
         public List<Transform> characterSpwanList;
 
+
+        [SerializeField]
+        private Timer timer;
+
+        [SerializeField]
+        private GameEndPopup endPopup;
+
+        [SerializeField]
+        private Transform createParent;
+
         private void Start()
         {
-            Debug.Log("dddddd");
+           
             GameOwnPlayerInit();
         }
 
@@ -28,16 +43,27 @@ namespace Changho.Managers
 
             if (changedProps.ContainsKey(ConfigData.LOAD))
             {
-                if (CheckAllPlayerLoadLevel())
+                if ((bool)changedProps[ConfigData.LOAD])
                 {
-                   
-                    //게임시작
-                    CreateCharacters();
+                    GameStartPlayerLoad();
                 }
                 else
                 {
-                    
+                    GameEndPlayerLoad();
                 }
+            }
+            else if (changedProps.ContainsKey(ConfigData.Exit))
+            {
+                if ((bool)changedProps[ConfigData.Exit])
+                {
+                    if (CheckAllExitLevel())
+                    {
+
+                        //로드 룸씬;
+                        Debug.Log("룸  GO GO");
+                    }
+                }
+
             }
         }
 
@@ -45,18 +71,55 @@ namespace Changho.Managers
 
 
 
+        IEnumerator CountBeforeGameStart()
+        {
+            int time = -1;
+            WaitForSeconds wait = new WaitForSeconds(1.0f);
+
+            while(time < count)
+            {
+
+                time += 1;
+
+                timer.BeforeGameTextSet(time.ToString());
+
+                yield return wait;
+
+            }
+
+            CreateCharacters();
+
+        }
+
+        IEnumerator GamePlayTimeRoutin()
+        {
+
+            int time = -1;
+
+            WaitForSeconds wait = new WaitForSeconds(1.0f);
+
+
+            while(time < gamePlayTime)
+            {
+                time += 1;
+
+
+                timer.GameCountDownTextSet(time, gamePlayTime);
+                yield return wait;
+
+            }
+
+            //게임 종료 
+
+            LoadPropertiesSet(false);
+        }
+
+
+
         public void GameOwnPlayerInit()
         {
 
-           var localProps = PhotonNetwork.LocalPlayer.CustomProperties;
-           ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
-
-           props.Add(ConfigData.CHARACTER, localProps[ConfigData.CHARACTER]);
-           props.Add(ConfigData.LOAD, true);
-
-           PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-
-         
+            LoadPropertiesSet(true);
         }
 
 
@@ -85,23 +148,34 @@ namespace Changho.Managers
 
             string path = string.Format("Changho/Prefaps/Characters/{0}",playerName);
             PhotonNetwork.Instantiate(path, characterSpwanList[index].position, characterSpwanList[index].rotation);
-
+            StartCoroutine(GamePlayTimeRoutin());
 
         }
 
 
         private bool CheckAllPlayerLoadLevel()
         {
-            return CountPlayer() == PhotonNetwork.PlayerList.Length;
+            return CountPlayer(ConfigData.LOAD) == PhotonNetwork.PlayerList.Length;
         }
 
-        private int CountPlayer()
+        private bool CheckAllPlayerEndLoadLevel()
+        {
+
+            return CountPlayer(ConfigData.LOAD) == 0;
+        }
+
+        private bool CheckAllExitLevel()
+        {
+            return CountPlayer(ConfigData.Exit) == PhotonNetwork.PlayerList.Length;
+        }
+
+        private int CountPlayer(string key )
         {
             int count = 0;
             for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
             {
                 object value; 
-                if(PhotonNetwork.PlayerList[i].CustomProperties.TryGetValue(ConfigData.LOAD , out value))
+                if(PhotonNetwork.PlayerList[i].CustomProperties.TryGetValue(key , out value))
                 {
                     if ((bool)value)
                     {
@@ -114,7 +188,7 @@ namespace Changho.Managers
             return count;
         }
 
-
+        
         private string PlayerLoad(Player player)
         {
 
@@ -144,6 +218,63 @@ namespace Changho.Managers
 
             return playerName;
         }
+
+
+        private void LoadPropertiesSet(bool value)
+        {
+
+            var localProps = PhotonNetwork.LocalPlayer.CustomProperties;
+            ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
+
+            props.Add(ConfigData.CHARACTER, localProps[ConfigData.CHARACTER]);
+            props.Add(ConfigData.LOAD, value);
+
+            PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+
+        }
+
+        private void ExitPropertesSet()
+        {
+            var localProps = PhotonNetwork.LocalPlayer.CustomProperties;
+            ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
+
+            props.Add(ConfigData.CHARACTER, localProps[ConfigData.CHARACTER]);
+            props.Add(ConfigData.Exit, true);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+        }
+
+
+        private void GameStartPlayerLoad()
+        {
+
+            if (CheckAllPlayerLoadLevel())
+            {
+                //게임시작
+                StartCoroutine(CountBeforeGameStart());
+            }
+            else
+            {
+
+            }
+        }
+
+        private void GameEndPlayerLoad()
+        {
+
+            if (CheckAllPlayerEndLoadLevel())
+            {
+               GameEndPopup popup = Instantiate(endPopup);
+               popup.transform.parent = createParent;
+               popup.transform.GetComponent<RectTransform>().localPosition = new Vector2(0, 0);
+               popup.onClickExitEventAction = ExitPropertesSet;
+               popup.OnOpen();
+             
+            }
+
+        }
+
+
+
 
     }
 }

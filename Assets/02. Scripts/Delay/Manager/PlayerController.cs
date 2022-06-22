@@ -99,9 +99,6 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
 
 
-
-
-
     private void OnTriggerEnter(Collider collider)
     {
         if (!photonView.IsMine)
