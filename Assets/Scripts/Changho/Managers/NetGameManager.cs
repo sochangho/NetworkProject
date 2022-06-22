@@ -84,9 +84,9 @@ namespace Changho.Managers
 
 
             string path = string.Format("Changho/Prefaps/Characters/{0}",playerName);
-            PhotonNetwork.Instantiate(path, characterSpwanList[index].position, characterSpwanList[index].rotation);
-
-
+            GameObject obj =  PhotonNetwork.Instantiate(path, characterSpwanList[index].position, characterSpwanList[index].rotation);
+            obj.GetComponent<PlayerController>().number = PhotonNetwork.LocalPlayer.ActorNumber;
+            
         }
 
 

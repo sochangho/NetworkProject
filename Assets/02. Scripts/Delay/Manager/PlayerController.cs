@@ -8,24 +8,29 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 {
     private float hAxis;
     private float vAxis;
-
     public float speed;
+    
     private bool isHit;
     private bool isTakeHit;
     private bool isCanControll = true;
+    
 
+
+   public int number;
     Vector3 moveVec;
 
     Animator anim;
     Rigidbody rigid;
 
     Collider other;
-    public WeaponBat bat;
+
+    FieldOfView fieldOfView;
+    
 
 
     private void Start()
     {
-
+       fieldOfView = GetComponent<FieldOfView>();
     }
 
     private void Awake()
@@ -54,6 +59,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         if (Input.GetKeyDown(KeyCode.Space))
         {
             photonView.RPC("DoSwing", RpcTarget.All);
+            
         }
 
 
@@ -86,7 +92,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         isCanControll = false;
 
         anim.SetTrigger("doHit");
-        bat.Use();
+        
 
         Invoke("DoSwingOut", 0.6f);
 
@@ -99,41 +105,42 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     }
 
 
-
-
-
-
-    private void OnTriggerEnter(Collider collider)
+    public void Attack()
     {
-        if (!photonView.IsMine)
-            return;
-
-        if (collider.gameObject.tag == "Melee")
-        {
-            other = collider;
-            photonView.RPC("TakeHit", RpcTarget.All);
-
-        }
-
+        fieldOfView.FindVisibleTargets();
     }
 
+    
+    
+
+    
+
+   public void Hit(Collider collider)
+   {
+        photonView.RPC("TakeHit", RpcTarget.All,collider.transform.root.forward.x,collider.transform.root.forward.z);
+   }
 
     [PunRPC]
-    public void TakeHit()
+    public void TakeHit(float _x, float _z)
     {
         isTakeHit = true;
         isCanControll = false;
 
+        Vector3 direction = new Vector3(_x,4,_z);
+        anim.SetBool("isTakeHit",true);
+        rigid.velocity = direction.normalized * 3;
 
-        anim.SetBool("isTakeHit", true);
-        rigid.AddForce(other.transform.forward * 3, ForceMode.Impulse);
-        Invoke("TakeHitOut", 3.0f);
+        Destroy(gameObject,0.5f);
     }
+
+    /*
     public void TakeHitOut()
     {
+        anim.SetBool("isTakeHit",false);
         isTakeHit = false;
         isCanControll = true;
     }
+    */
 
 
 

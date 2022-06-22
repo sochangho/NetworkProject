@@ -8,7 +8,7 @@ namespace Jiyeon
     public class WeaponBat : MonoBehaviour
     {
         public float rate;
-        public BoxCollider meleeArea;
+        //public BoxCollider meleeArea;
         // public TrailRenderer trailEffect;
 
         public void Use()
@@ -20,11 +20,12 @@ namespace Jiyeon
         private IEnumerator Swing()
         {
 
-            meleeArea.enabled = true;
+            //meleeArea.enabled = true;
             //trailEffect.enabled = true;
+            
 
             yield return new WaitForSeconds(0.3f);
-            meleeArea.enabled = false;
+            //meleeArea.enabled = false;
             //trailEffect.enabled = false;
 
         }
@@ -34,6 +35,7 @@ namespace Jiyeon
             if (collision.gameObject.tag == "Player")
             {
                 //킬카운트 증가
+               // meleeArea.enabled = false;
             }
         }
 

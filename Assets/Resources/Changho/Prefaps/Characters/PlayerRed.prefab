@@ -360,6 +360,7 @@ GameObject:
   - component: {fileID: 49805475733098746}
   - component: {fileID: 6159790336384798224}
   - component: {fileID: -4011730530349007274}
+  - component: {fileID: -6888523433450778752}
   m_Layer: 0
   m_Name: PlayerRed
   m_TagString: Player
@@ -445,7 +446,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
-  bat: {fileID: 4868984271833527058}
+  number: 0
 --- !u!114 &8519399193156368566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -527,6 +528,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterType: 2
+--- !u!114 &-6888523433450778752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2938975660874339766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3ed0fdb7bb576e49a416138bcb874e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewRadius: 0.3
+  viewAngle: 170
+  number: 0
+  visibleTargets: []
 --- !u!1 &2938975660874339768
 GameObject:
   m_ObjectHideFlags: 0
@@ -1058,33 +1075,6 @@ Transform:
   m_Father: {fileID: 2938975660873910664}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: -55.082336, y: 91.746666, z: -92.278595}
---- !u!65 &2669152969928893874
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8206282402308999409}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 0.45, y: 0.75, z: 0.45}
-  m_Center: {x: 0.0000000011243646, y: 0.55, z: -0.000099940036}
---- !u!114 &4868984271833527058
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8206282402308999409}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15e773101887c7446aecc0e1b647f270, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rate: 0
-  meleeArea: {fileID: 2669152969928893874}
 --- !u!1 &8738756621757062437
 GameObject:
   m_ObjectHideFlags: 0
@@ -1200,12 +1190,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea5fe6a4a6868104baea9a2670e0aead, type: 3}
---- !u!1 &8206282402308999409 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 622867313237119112, guid: ea5fe6a4a6868104baea9a2670e0aead,
-    type: 3}
-  m_PrefabInstance: {fileID: 8738756621038622841}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8208512880432537295 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 624929568498632374, guid: ea5fe6a4a6868104baea9a2670e0aead,
