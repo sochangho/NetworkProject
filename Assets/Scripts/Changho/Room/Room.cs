@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 using Photon.Pun;
 using Photon.Realtime;
@@ -39,11 +40,25 @@ namespace Changho.Room
         private PlayerOwnEntry ownEntry;
 
 
+        [SerializeField]
+        private MapScene[] scenes;
+
+        [System.Serializable]
+        public class MapScene
+        {
+            public string scenename;
+            public MapType mapType;
+            public Sprite image;
+           
+        }
+
+        [SerializeField]
+        private MapSelect mapSelect;
 
 
         private Dictionary<int, PlayerEntry> playerEntryDic = new Dictionary<int, PlayerEntry>();
 
-
+        private string mapName;
 
         private void Awake()
         {
@@ -73,6 +88,62 @@ namespace Changho.Room
             }
 
 
+            if(PhotonNetwork.LocalPlayer.ActorNumber == PhotonNetwork.MasterClient.ActorNumber)
+            {
+                var propertis  =  PhotonNetwork.CurrentRoom.CustomProperties;
+
+                ExitGames.Client.Photon.Hashtable newProperties = new ExitGames.Client.Photon.Hashtable();
+
+                foreach (var prop in propertis)
+                {
+                    newProperties.Add(prop.Key, prop.Value);
+
+                }
+
+
+                if (!propertis.ContainsKey(ConfigData.MAP))
+                {                 
+                    newProperties.Add(ConfigData.MAP, scenes[0].mapType);
+                }
+              
+
+
+                PhotonNetwork.CurrentRoom.SetCustomProperties(newProperties);
+
+                 MapType type = (MapType)newProperties[ConfigData.MAP];
+
+
+                List<MapScene> list = new List<MapScene>();
+                for(int i = 0; i < scenes.Length; i++)
+                {
+                    list.Add(scenes[i]);
+
+                }
+
+
+                int value = list.FindIndex(x => x.mapType == type);
+
+
+                mapSelect.SetDropDownMap(list , true , value);
+                mapSelect.action = MapChange;
+                
+            }
+            else
+            {
+                MapType type = (MapType)PhotonNetwork.CurrentRoom.CustomProperties[ConfigData.MAP];
+
+                List<MapScene> list = new List<MapScene>();
+                for (int i = 0; i < scenes.Length; i++)
+                {
+                    list.Add(scenes[i]);
+
+                }
+                int value = list.FindIndex(x => x.mapType == type);
+                mapSelect.SetDropDownMap(list, false , value);
+                mapSelect.action = MapChange;
+            }
+
+
 
             CharactersCamRender.Instance.CharaterInit(playerEntryDic);
 
@@ -97,7 +168,7 @@ namespace Changho.Room
             if (PhotonNetwork.LocalPlayer.ActorNumber == num)
             {
                 ownEntry.MasterSet(true);
-
+                mapSelect.dropdown.gameObject.SetActive(true);
                 foreach (var pd in playerEntryDic)
                 {
                     pd.Value.MasterSet(false);
@@ -308,10 +379,68 @@ namespace Changho.Room
             PhotonNetwork.CurrentRoom.IsVisible = false;
 
 
-            PhotonNetwork.LoadLevel("ChanghoMap_Cube 1");
+            PhotonNetwork.LoadLevel(mapName);
 
 
         }
+
+
+        public void MapChange(int value)
+        {
+
+            Debug.Log("map 체인지" +  value);
+           var properties = PhotonNetwork.CurrentRoom.CustomProperties;
+
+            ExitGames.Client.Photon.Hashtable newProperties = new ExitGames.Client.Photon.Hashtable();
+
+            foreach(var prop in properties)
+            {
+                newProperties.Add(prop.Key, prop.Value);
+
+            }
+
+            newProperties[ConfigData.MAP] = scenes[value].mapType;
+
+            PhotonNetwork.CurrentRoom.SetCustomProperties(newProperties);
+
+        }
+
+
+        public void RoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
+        {
+
+            object type;
+
+            if(propertiesThatChanged.TryGetValue(ConfigData.MAP , out type))
+            {
+
+                MapType mapT = (MapType)type;
+
+
+
+                List<MapScene> list = new List<MapScene>();
+                for (int i = 0; i < scenes.Length; i++)
+                {
+                    list.Add(scenes[i]);
+
+                }
+
+
+                int value = list.FindIndex(x => x.mapType == mapT);
+
+                mapSelect.image.sprite = scenes[value].image;
+                mapName = scenes[value].scenename;
+            }
+
+
+
+
+
+
+        }
+
+
+
 
     }
 

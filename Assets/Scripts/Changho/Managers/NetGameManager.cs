@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 using Photon.Realtime;
 using Photon.Pun;
@@ -27,6 +28,9 @@ namespace Changho.Managers
 
         [SerializeField]
         private Transform createParent;
+
+        [SerializeField]
+        private PhotonView owntargetObject;
 
         private void Start()
         {
@@ -58,9 +62,26 @@ namespace Changho.Managers
                 {
                     if (CheckAllExitLevel())
                     {
+                        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                        {
+                        if (!PhotonNetwork.CurrentRoom.IsOpen)
+                        {
 
-                        //로드 룸씬;
-                        Debug.Log("룸  GO GO");
+                            PhotonNetwork.CurrentRoom.IsOpen = true;
+                        }
+
+
+                        if (!PhotonNetwork.CurrentRoom.IsVisible)
+                        {
+                            PhotonNetwork.CurrentRoom.IsVisible = true;
+                        }
+
+                        
+                            Debug.Log("마스터 클라이언트  모든 오브젝트 삭제");
+                            PhotonNetwork.DestroyAll();
+                            PhotonNetwork.LoadLevel("RoomScene");
+                        }
+                        
                     }
                 }
 
@@ -146,8 +167,15 @@ namespace Changho.Managers
 
 
 
-            string path = string.Format("Changho/Prefaps/Characters/{0}",playerName);
-            PhotonNetwork.Instantiate(path, characterSpwanList[index].position, characterSpwanList[index].rotation);
+
+            if (owntargetObject == null)
+            {
+
+                string path = string.Format("Changho/Prefaps/Characters/{0}", playerName);
+                var go = PhotonNetwork.Instantiate(path, characterSpwanList[index].position, characterSpwanList[index].rotation);
+
+                owntargetObject = go.GetComponent<PhotonView>();
+            }
             StartCoroutine(GamePlayTimeRoutin());
 
         }
@@ -222,7 +250,7 @@ namespace Changho.Managers
 
         private void LoadPropertiesSet(bool value)
         {
-
+            Debug.Log("생성");
             var localProps = PhotonNetwork.LocalPlayer.CustomProperties;
             ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
 

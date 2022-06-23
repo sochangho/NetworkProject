@@ -41,7 +41,18 @@ namespace Changho.UI
 
             ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable();
             properties.Add(ConfigData.READY, false);
-            properties.Add(ConfigData.CHARACTER, CharacterType.type1);
+
+
+           var localProperties =  PhotonNetwork.LocalPlayer.CustomProperties;
+
+            if (localProperties.ContainsKey(ConfigData.CHARACTER))
+            {
+                properties.Add(ConfigData.CHARACTER, localProperties[ConfigData.CHARACTER]);
+            }
+            else
+            {
+                properties.Add(ConfigData.CHARACTER, CharacterType.type1);
+            }
 
 
             player.SetCustomProperties(properties);

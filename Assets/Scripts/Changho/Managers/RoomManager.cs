@@ -51,7 +51,10 @@ namespace Changho.Managers {
         }
 
 
-   
+        public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+        {
+            room.RoomPropertiesUpdate(propertiesThatChanged);
+        }
 
         #endregion
     }
