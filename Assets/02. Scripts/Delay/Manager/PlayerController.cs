@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            isCanControll = false;
             photonView.RPC("DoSwing", RpcTarget.All);
             
         }
@@ -89,7 +90,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public void DoSwing()
     {
         isHit = true;
-        isCanControll = false;
+        
 
         anim.SetTrigger("doHit");
         

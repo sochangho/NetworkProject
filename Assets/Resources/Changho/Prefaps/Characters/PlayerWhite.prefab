@@ -670,9 +670,6 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: isTakeHit
-  - Type: 9
-    SynchronizeType: 0
-    Name: doTakeHit
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
