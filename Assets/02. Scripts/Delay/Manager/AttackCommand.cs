@@ -7,6 +7,7 @@ public class AttackCommand : MonoBehaviourPun, ICommand
 {
     private bool isHit;
     PlayerController playerController;
+    Animator anim;
     public void Execute()
     {
         PlayerAttack();
@@ -15,6 +16,7 @@ public class AttackCommand : MonoBehaviourPun, ICommand
     private void Awake()
     {
         playerController = GetComponent<PlayerController>();
+        anim = GetComponent<Animator>();
     }
 
     private void PlayerAttack()
@@ -28,9 +30,8 @@ public class AttackCommand : MonoBehaviourPun, ICommand
     {
         isHit = true;
         playerController.isCanControll = false;
-
-        //anim.SetTrigger("doHit");
         
+        anim.SetTrigger("doHit");
 
         Invoke("DoSwingOut", 0.6f);
 
@@ -41,6 +42,5 @@ public class AttackCommand : MonoBehaviourPun, ICommand
         isHit = false;
         playerController.isCanControll = true;
         
-        //isCanControll = true;
     }
 }

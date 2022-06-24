@@ -37,9 +37,10 @@ public class FieldOfView : MonoBehaviour
                 if(targetsInViewRadius[i].tag == "Player")
                 {
                
-                    if(number == targetsInViewRadius[i].gameObject.GetComponent<PlayerController>().number){
-                    continue;
-               }
+                    if(number == targetsInViewRadius[i].gameObject.GetComponent<PlayerController>().number)
+                    {
+                        continue;
+                    }
 
                targetsInViewRadius[i].GetComponent<PlayerController>().Hit(this.gameObject.GetComponent<Collider>());
 
