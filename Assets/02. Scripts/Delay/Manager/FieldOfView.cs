@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,7 +23,7 @@ public class FieldOfView : MonoBehaviour
     public void FindVisibleTargets()
     {
         visibleTargets.Clear();
-        // viewRadius를 반지름으로 한 원 영역 내 콜라이더를 모두 가져옴
+        
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius);
 
         for (int i = 0; i < targetsInViewRadius.Length; i++)

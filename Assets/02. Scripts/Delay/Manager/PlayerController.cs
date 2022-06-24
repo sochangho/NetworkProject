@@ -10,9 +10,9 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     private float vAxis;
     public float speed;
     
-    private bool isHit;
+    
     private bool isTakeHit;
-    private bool isCanControll = true;
+    public bool isCanControll = true;
     
 
 
@@ -25,6 +25,22 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     Collider other;
 
     FieldOfView fieldOfView;
+    ICommand attackCommand;
+
+    private static PlayerController instance;
+     public static PlayerController Instance
+    {
+        get
+        {
+            if(null == instance)
+            {
+                //게임 인스턴스가 없다면 하나 생성해서 넣어준다.
+                instance = new PlayerController();
+            }
+            return instance;
+        }
+    }
+        
     
 
 
@@ -37,6 +53,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     {
         anim = GetComponentInChildren<Animator>();
         rigid = GetComponent<Rigidbody>();
+        attackCommand = gameObject.AddComponent<AttackCommand>();
+        
     }
 
     private void FixedUpdate()
@@ -50,16 +68,16 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
     private void Update()
     {
-
-
-
+        
         if (!photonView.IsMine)
             return;
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            isCanControll = false;
-            photonView.RPC("DoSwing", RpcTarget.All);
+            // isCanControll = false;
+            //photonView.RPC("DoSwing", RpcTarget.All);
+            attackCommand.Execute();
+            TriggerAnim("doHit");
             
         }
 
@@ -85,25 +103,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         }
 
     }
-
-    [PunRPC]
-    public void DoSwing()
-    {
-        isHit = true;
-        
-
-        anim.SetTrigger("doHit");
-        
-
-        Invoke("DoSwingOut", 0.6f);
-
-    }
-
-    public void DoSwingOut()
-    {
-        isHit = false;
-        isCanControll = true;
-    }
+    
 
 
     public void Attack()
@@ -146,6 +146,10 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
 
 
+    public void TriggerAnim(string name)
+    {
+        anim.SetTrigger(name);
+    }
 
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

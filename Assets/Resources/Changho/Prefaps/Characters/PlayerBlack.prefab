@@ -977,6 +977,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
+  isCanControll: 1
   number: 0
 --- !u!114 &5042341431027107199
 MonoBehaviour:
