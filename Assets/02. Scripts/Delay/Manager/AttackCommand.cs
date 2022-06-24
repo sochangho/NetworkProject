@@ -33,7 +33,7 @@ public class AttackCommand : MonoBehaviourPun, ICommand
         
         anim.SetTrigger("doHit");
 
-        Invoke("DoSwingOut", 0.6f);
+        //TODO: 애니메이션 종료 확인 함수 추가
 
     }
 
