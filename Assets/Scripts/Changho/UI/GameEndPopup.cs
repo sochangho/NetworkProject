@@ -11,20 +11,20 @@ namespace Changho.UI
     {
 
 
-        [SerializeField]
-        private Button button;
-
-
         public UnityAction onClickExitEventAction;
 
-   
+
+
+        public void Start()
+        {
+            OnOpen();
+        }
+
 
         public override void OnOpen()
         {
             base.OnOpen();
-            button.onClick.AddListener(OnClose);
-
-            Invoke("Close", 3.0f);
+            Invoke("OnClose", 3.0f);
 
         }
 
@@ -35,20 +35,7 @@ namespace Changho.UI
                 onClickExitEventAction();
             }
 
-            button.interactable = false;
-            //base.OnClose();
-            
-        }
-
-        private void Close()
-        {
-
-
-            if(button.interactable == true)
-            {
-
-                OnClose();
-            }
+                   
         }
 
  

@@ -32,11 +32,13 @@ namespace Changho.Managers
         [SerializeField]
         private PhotonView owntargetObject;
 
-        private void Start()
+
+        public override void Awake()
         {
-           
+           base.Awake();
             GameOwnPlayerInit();
         }
+   
 
 
 
@@ -56,36 +58,7 @@ namespace Changho.Managers
                     GameEndPlayerLoad();
                 }
             }
-            else if (changedProps.ContainsKey(ConfigData.Exit))
-            {
-                if ((bool)changedProps[ConfigData.Exit])
-                {
-                    if (CheckAllExitLevel())
-                    {
-                        if (PhotonNetwork.LocalPlayer.IsMasterClient)
-                        {
-                        if (!PhotonNetwork.CurrentRoom.IsOpen)
-                        {
-
-                            PhotonNetwork.CurrentRoom.IsOpen = true;
-                        }
-
-
-                        if (!PhotonNetwork.CurrentRoom.IsVisible)
-                        {
-                            PhotonNetwork.CurrentRoom.IsVisible = true;
-                        }
-
-                        
-                            Debug.Log("마스터 클라이언트  모든 오브젝트 삭제");
-                            PhotonNetwork.DestroyAll();
-                            PhotonNetwork.LoadLevel("RoomScene");
-                        }
-                        
-                    }
-                }
-
-            }
+          
         }
 
         #endregion
@@ -175,6 +148,7 @@ namespace Changho.Managers
                 var go = PhotonNetwork.Instantiate(path, characterSpwanList[index].position, characterSpwanList[index].rotation);
 
                 owntargetObject = go.GetComponent<PhotonView>();
+                Camera.main.gameObject.AddComponent<Changho.PlayerCameraSet>().CameraFollow();
             }
             StartCoroutine(GamePlayTimeRoutin());
 
@@ -192,10 +166,11 @@ namespace Changho.Managers
             return CountPlayer(ConfigData.LOAD) == 0;
         }
 
-        private bool CheckAllExitLevel()
+        private bool CheckAllPlayerExit()
         {
             return CountPlayer(ConfigData.Exit) == PhotonNetwork.PlayerList.Length;
         }
+
 
         private int CountPlayer(string key )
         {
@@ -250,7 +225,7 @@ namespace Changho.Managers
 
         private void LoadPropertiesSet(bool value)
         {
-            Debug.Log("생성");
+            Debug.Log("생성 : " + value);
             var localProps = PhotonNetwork.LocalPlayer.CustomProperties;
             ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
 
@@ -261,14 +236,43 @@ namespace Changho.Managers
 
         }
 
-        private void ExitPropertesSet()
-        {
-            var localProps = PhotonNetwork.LocalPlayer.CustomProperties;
-            ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
+        //private void ExitPropertesSet()
+        //{
+        //    var localProps = PhotonNetwork.LocalPlayer.CustomProperties;
+        //    ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
 
-            props.Add(ConfigData.CHARACTER, localProps[ConfigData.CHARACTER]);
-            props.Add(ConfigData.Exit, true);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+        //    props.Add(ConfigData.CHARACTER, localProps[ConfigData.CHARACTER]);
+        //    props.Add(ConfigData.Exit, true);
+        //    PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+        //    MasterClientExit();
+        //}
+
+        private void MasterClientExit()
+        {
+            Debug.Log("!1111");
+            if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+
+                if (!PhotonNetwork.CurrentRoom.IsOpen)
+                {
+                    PhotonNetwork.CurrentRoom.IsOpen = true;
+
+                }
+
+                if (!PhotonNetwork.CurrentRoom.IsVisible)
+                {
+
+                    PhotonNetwork.CurrentRoom.IsVisible = true;
+                }
+
+                Debug.Log("마스터 클라이언트 ");
+                PhotonNetwork.DestroyAll();
+                TransitionScene("RoomScene");
+            }
+         
+
+
+
         }
 
 
@@ -277,6 +281,8 @@ namespace Changho.Managers
 
             if (CheckAllPlayerLoadLevel())
             {
+
+                Debug.Log("플레이어 수 " + PhotonNetwork.PlayerList.Length);
                 //게임시작
                 StartCoroutine(CountBeforeGameStart());
             }
@@ -294,8 +300,8 @@ namespace Changho.Managers
                GameEndPopup popup = Instantiate(endPopup);
                popup.transform.parent = createParent;
                popup.transform.GetComponent<RectTransform>().localPosition = new Vector2(0, 0);
-               popup.onClickExitEventAction = ExitPropertesSet;
-               popup.OnOpen();
+               popup.onClickExitEventAction = MasterClientExit;
+               
              
             }
 

@@ -59,7 +59,7 @@ namespace Changho.Managers
         public override void OnJoinedRoom()
         {
             Debug.Log("방 접속 ");
-            TransitionScene("RoomScene");
+            PhotonNetwork.LoadLevel("RoomScene");
         }
 
         public override void OnJoinRandomFailed(short returnCode, string message)

@@ -62,8 +62,8 @@ namespace Changho.Room
 
         private void Awake()
         {
-            roomManager = RoomManager.Instance;
 
+            roomManager = RoomManager.Instance;
             roomManager.room = this;
 
             foreach (Player player in PhotonNetwork.PlayerList)
@@ -230,7 +230,7 @@ namespace Changho.Room
             ReadyCheck();
         }
 
-        // 여기서 부터......
+        
         public void PlayerUpdate(Player target, ExitGames.Client.Photon.Hashtable changedProps)
         {
 
@@ -377,8 +377,7 @@ namespace Changho.Room
 
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
-
-
+           
             PhotonNetwork.LoadLevel(mapName);
 
 
