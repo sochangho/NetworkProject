@@ -9,10 +9,13 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     private float hAxis;
     private float vAxis;
     public float speed;
+    private float defaultSpeed;
 
     private bool isTakeHit;
     public bool isCanControll = true;
+    public bool isRunCool;
     public float detectSize;
+
 
 
 
@@ -40,6 +43,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
     private void Start()
     {
+        isRunCool = true;
+        defaultSpeed = speed;
         fieldOfView = GetComponent<FieldOfView>();
         objChecker = new SphereObjChecker(this);
     }
@@ -73,9 +78,30 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             //TriggerAnim("doHit"); 
         }
 
+        if (Input.GetKeyDown(KeyCode.LeftShift) && isRunCool == true)
+        {
+            
+            defaultSpeed = 5;
+            StartCoroutine("CRunCoolTime");
+
+        }
+        else
+        {
+            defaultSpeed = speed;
+        }
+
 
 
     }
+
+    IEnumerable CRunCoolTime()
+    {
+        yield return new WaitForSeconds(1.0f);
+        isRunCool = false;
+        yield return new WaitForSeconds(5.0f);
+        isRunCool = true;
+    }
+    
 
 
     public void Moving()
@@ -97,7 +123,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         if (objChecker.IsPerceive())
             return;
 
-        transform.position += moveVec * speed * Time.deltaTime;
+        transform.position += moveVec * defaultSpeed * Time.deltaTime;
 
     }
 
@@ -106,11 +132,17 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public void Attack()
     {
         fieldOfView.FindVisibleTargets();
+
+        if (!photonView.IsMine) 
+        { return; }
+        SeongJun.KillManager.Instance.playerRankingDictionary[photonView.Owner.GetPlayerNumber()].KillUp();
+        SeongJun.KillManager.Instance.RankCheck();
     }
 
     public void Hit(Collider collider)
     {
         photonView.RPC("TakeHit", RpcTarget.All, collider.transform.root.forward.x, collider.transform.root.forward.z);
+        
     }
 
     [PunRPC]

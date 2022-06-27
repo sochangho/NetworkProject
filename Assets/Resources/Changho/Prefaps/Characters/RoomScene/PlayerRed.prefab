@@ -413,7 +413,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
-  bat: {fileID: 4868984271833527058}
+  isCanControll: 1
+  detectSize: 0
+  number: 0
+  dotPos: {fileID: 0}
+  deadEffect: {fileID: 0}
 --- !u!114 &8519399193156368566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -727,7 +731,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 4300000, guid: 02dd6406ed1ebc248b2fafd0485e0de9, type: 3}
+  m_Mesh: {fileID: 4300000, guid: f6821c8cf1bbfab4db2b8c3dbb985894, type: 3}
   m_Bones:
   - {fileID: 2938975660873910700}
   - {fileID: 2938975660873910664}
@@ -1055,7 +1059,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rate: 0
-  meleeArea: {fileID: 2669152969928893874}
 --- !u!1 &8738756621757062437
 GameObject:
   m_ObjectHideFlags: 0

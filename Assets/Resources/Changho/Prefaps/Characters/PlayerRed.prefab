@@ -391,6 +391,7 @@ GameObject:
   - component: {fileID: 6159790336384798224}
   - component: {fileID: -4011730530349007274}
   - component: {fileID: -6888523433450778752}
+  - component: {fileID: 2163354936280134630}
   m_Layer: 9
   m_Name: PlayerRed
   m_TagString: Player
@@ -583,6 +584,18 @@ MonoBehaviour:
   viewAngle: 170
   number: 0
   visibleTargets: []
+--- !u!114 &2163354936280134630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2938975660874339766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af25c04c61136084faf5ce29f393ae93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2938975660874339768
 GameObject:
   m_ObjectHideFlags: 0
@@ -812,7 +825,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 4300000, guid: 02dd6406ed1ebc248b2fafd0485e0de9, type: 3}
+  m_Mesh: {fileID: 4300000, guid: f6821c8cf1bbfab4db2b8c3dbb985894, type: 3}
   m_Bones:
   - {fileID: 2938975660873910700}
   - {fileID: 2938975660873910664}
