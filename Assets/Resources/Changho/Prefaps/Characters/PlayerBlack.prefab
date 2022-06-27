@@ -922,6 +922,7 @@ GameObject:
   - component: {fileID: 7401940940859323353}
   - component: {fileID: -7751499152256874246}
   - component: {fileID: 3632539143330151242}
+  - component: {fileID: 7255375684587407760}
   m_Layer: 9
   m_Name: PlayerBlack
   m_TagString: Player
@@ -1077,6 +1078,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: isTakeHit
+  - Type: 4
+    SynchronizeType: 1
+    Name: isHit
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -1109,6 +1113,18 @@ MonoBehaviour:
   viewAngle: 170
   number: 0
   visibleTargets: []
+--- !u!114 &7255375684587407760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948462661194852479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af25c04c61136084faf5ce29f393ae93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5369784329581011180
 GameObject:
   m_ObjectHideFlags: 0

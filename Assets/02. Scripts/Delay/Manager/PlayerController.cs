@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     {
         anim = GetComponentInChildren<Animator>();
         rigid = GetComponent<Rigidbody>();
-        attackCommand = gameObject.AddComponent<AttackCommand>();
+        attackCommand = GetComponent<AttackCommand>();
 
         
     }
@@ -78,26 +78,6 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
     public void Moving()
     {   
-        /*
-        if (isCanControll && objChecker.IsPerceive() == false)
-        {
-            
-            hAxis = Input.GetAxisRaw("Horizontal");
-            vAxis = Input.GetAxisRaw("Vertical");
-
-            if(objChecker.IsPerceive() == true)
-            {
-                return;
-            }
-
-            moveVec = new Vector3(hAxis, 0, vAxis).normalized;
-            anim.SetBool("isRun", moveVec != Vector3.zero);
-
-
-            transform.position += moveVec * speed * Time.deltaTime;
-            transform.LookAt(transform.position + moveVec);
-        }
-        */
 
         if (!isCanControll)
             return;
