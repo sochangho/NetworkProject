@@ -144,6 +144,7 @@ namespace Changho.Managers
 
 
 
+
             if (owntargetObject == null)
             {
 
@@ -152,6 +153,7 @@ namespace Changho.Managers
 
                 owntargetObject = go.GetComponent<PhotonView>();
                 Camera.main.gameObject.AddComponent<Changho.PlayerCameraSet>().CameraFollow();
+                owntargetObject.GetComponent<PlayerController>().number = PhotonNetwork.LocalPlayer.ActorNumber;
             }
             StartCoroutine(GamePlayTimeRoutin());
 
