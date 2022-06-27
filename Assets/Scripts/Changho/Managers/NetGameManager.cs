@@ -58,6 +58,9 @@ namespace Changho.Managers
                     GameEndPlayerLoad();
                 }
             }
+
+            
+
           
         }
 
@@ -170,6 +173,8 @@ namespace Changho.Managers
         {
             return CountPlayer(ConfigData.Exit) == PhotonNetwork.PlayerList.Length;
         }
+
+      
 
 
         private int CountPlayer(string key )

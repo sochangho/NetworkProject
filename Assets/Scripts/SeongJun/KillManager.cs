@@ -34,11 +34,11 @@ namespace SeongJun
             {
                 playerRankingDictionary = new Dictionary<int, PlayerRankText>(); 
             }
-            PhotonNetwork.Instantiate("playerNamePrefeb", Vector3.zero, Quaternion.identity);
+            PhotonNetwork.Instantiate("SeongJun/playerNamePrefeb", Vector3.zero, Quaternion.identity);
          
             
             //↓이거는 테스트 하려고 만든 거니 프로젝트 합칠때 삭제해도 됌
-            PhotonNetwork.Instantiate("playerPrefeb", Vector3.zero, Quaternion.identity);
+            PhotonNetwork.Instantiate("SeongJun/playerPrefeb", Vector3.zero, Quaternion.identity);
         }
         public void RankCheck()
         {

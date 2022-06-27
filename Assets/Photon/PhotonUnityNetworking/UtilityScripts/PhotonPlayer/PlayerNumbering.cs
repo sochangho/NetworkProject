@@ -208,8 +208,9 @@ namespace Photon.Pun.UtilityScripts
         /// <returns>persistent index in room. -1 for no indexing</returns>
         public static int GetPlayerNumber(this Player player)
         {
+           
 			if (player == null) {
-				return -1;
+                return -1;
 			}
 
             if (PhotonNetwork.OfflineMode)
@@ -217,7 +218,7 @@ namespace Photon.Pun.UtilityScripts
                 return 0;
             }
             if (!PhotonNetwork.IsConnectedAndReady)
-            {
+            {               
                 return -1;
             }
 

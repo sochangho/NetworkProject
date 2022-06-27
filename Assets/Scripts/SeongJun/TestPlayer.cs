@@ -5,7 +5,7 @@ using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 namespace SeongJun
 {
-    public class testPlayer : MonoBehaviourPun
+    public class TestPlayer : MonoBehaviourPun
     {
         void Update()
         {
