@@ -32,14 +32,11 @@ public class AttackCommand : MonoBehaviourPun, ICommand
         playerController.isCanControll = false;
         
         anim.SetTrigger("doHit");
-        
-
 
     }
 
     public void DoSwingOut()
     {
-        Debug.Log("끝");
 
         isHit = false;
         playerController.isCanControll = true;

@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
     public Transform dotPos;
 
+    public ParticleSystem deadEffect;
+
 
 
     
@@ -119,9 +121,18 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         anim.SetBool("isTakeHit",true);
         rigid.velocity = direction.normalized * 3;
 
-        Destroy(gameObject,0.5f);
+        StopCoroutine("CEffectDelay");
+        StartCoroutine("CEffectDelay");
     }
     
+    IEnumerator CEffectDelay()
+    {
+        yield return new WaitForSeconds(0.25f);
+        
+        Destroy(gameObject);
+
+        Instantiate(deadEffect,transform.position,Quaternion.identity);
+    }
 
 
 

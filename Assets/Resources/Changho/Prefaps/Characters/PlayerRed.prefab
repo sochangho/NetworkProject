@@ -481,6 +481,8 @@ MonoBehaviour:
   detectSize: 0.05
   number: 0
   dotPos: {fileID: 6808276980771142308}
+  deadEffect: {fileID: 2779868659368990069, guid: a693b69ea321385409d04bd804a5f8bf,
+    type: 3}
 --- !u!114 &8519399193156368566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -546,6 +548,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: isTakeHit
+  - Type: 4
+    SynchronizeType: 0
+    Name: isHit
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
