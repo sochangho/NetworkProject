@@ -283,9 +283,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rankingPanel: {fileID: 3739970055113881679}
+  playerPrefeb: {fileID: 3632201845104657964, guid: 29d3f47c8f5739c4a8f2283301467373,
+    type: 3}
   playerNamePrefeb: {fileID: 3617795392310980425, guid: a8d68ad02a90cf740929d6b74cae6177,
     type: 3}
-  playerList: []
+  killList: 
 --- !u!114 &3437269159052207233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,10 +300,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 602eab2af40906c42b62ea2c034b0614, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chatList: []
   chatButton: {fileID: 3739970055011096193}
   chatLog: {fileID: 3739970055448624934}
-  chatingList: {fileID: 3739970055505896495}
   inputField: {fileID: 3739970055184865303}
   scroll_rect: {fileID: 0}
 --- !u!1 &3437269159052207234

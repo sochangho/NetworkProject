@@ -172,6 +172,7 @@ MonoBehaviour:
   ranking: 0
   playerNameText: {fileID: 3617795392233147596}
   killText: {fileID: 7212901674393974158}
+  RT: {fileID: 0}
 --- !u!114 &6649693180754357405
 MonoBehaviour:
   m_ObjectHideFlags: 0
