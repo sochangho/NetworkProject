@@ -43,8 +43,9 @@ public class FieldOfView : MonoBehaviour
                     }
 
                targetsInViewRadius[i].GetComponent<PlayerController>().Hit(this.gameObject.GetComponent<Collider>());
-
-            }
+               Changho.Managers.NetGameManager.Instance.UpScore(this.gameObject.GetComponent<Photon.Pun.PhotonView>() ,
+                   targetsInViewRadius[i].GetComponent<PlayerController>().number);
+                }
             }
         }
     }

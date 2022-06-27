@@ -58,7 +58,7 @@ namespace Changho.Room
 
         private Dictionary<int, PlayerEntry> playerEntryDic = new Dictionary<int, PlayerEntry>();
 
-        private string mapName;
+        public string mapName;
 
         private void Awake()
         {
@@ -139,8 +139,11 @@ namespace Changho.Room
 
                 }
                 int value = list.FindIndex(x => x.mapType == type);
+
                 mapSelect.SetDropDownMap(list, false , value);
                 mapSelect.action = MapChange;
+
+                mapName = scenes[value].scenename;
             }
 
 
@@ -377,7 +380,7 @@ namespace Changho.Room
 
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
-           
+            Debug.Log("룸 이름 : " + mapName);
             PhotonNetwork.LoadLevel(mapName);
 
 
@@ -387,7 +390,7 @@ namespace Changho.Room
         public void MapChange(int value)
         {
 
-            Debug.Log("map 체인지" +  value);
+           
            var properties = PhotonNetwork.CurrentRoom.CustomProperties;
 
             ExitGames.Client.Photon.Hashtable newProperties = new ExitGames.Client.Photon.Hashtable();
@@ -429,6 +432,7 @@ namespace Changho.Room
 
                 mapSelect.image.sprite = scenes[value].image;
                 mapName = scenes[value].scenename;
+
             }
 
 

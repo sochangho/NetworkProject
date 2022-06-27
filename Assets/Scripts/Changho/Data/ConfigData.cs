@@ -9,9 +9,8 @@ public class ConfigData
     public const string CHARACTER = "character";
     public const string Exit = "exit";
     public const string MAP = "map";
-
-
-
+    public const string HITPLAYER = "hitplayer";
+    public const string ACTIVE = "active";
 
 }
 

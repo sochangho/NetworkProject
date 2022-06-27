@@ -9,7 +9,7 @@ using Photon.Pun.UtilityScripts;
 
 using Changho.UI;
 
-
+using SeongJun;
 namespace Changho.Managers
 {
     public class NetGameManager : GamePhotonManager<NetGameManager>
@@ -37,9 +37,10 @@ namespace Changho.Managers
         {
            base.Awake();
             GameOwnPlayerInit();
+            gamePlayTime = 120;
         }
    
-
+        
 
 
         #region PhotonCallBacks
@@ -49,8 +50,10 @@ namespace Changho.Managers
 
             if (changedProps.ContainsKey(ConfigData.LOAD))
             {
+                
                 if ((bool)changedProps[ConfigData.LOAD])
                 {
+                    Debug.Log("ddd");
                     GameStartPlayerLoad();
                 }
                 else
@@ -59,7 +62,27 @@ namespace Changho.Managers
                 }
             }
 
-            
+            if (changedProps.ContainsKey(ConfigData.ACTIVE))
+            {
+                if (!(bool)changedProps[ConfigData.ACTIVE] && targetPlayer.IsLocal)
+                {
+                    //리스폰
+                    string playerName = PlayerLoad(targetPlayer);
+                    string path = string.Format("Changho/Prefaps/Characters/{0}", playerName);
+
+                    int randomIndex = Random.Range(0, characterSpwanList.Count);
+
+                    var go = PhotonNetwork.Instantiate(path, characterSpwanList[randomIndex].position, characterSpwanList[randomIndex].rotation);
+
+                    owntargetObject = go.GetComponent<PhotonView>();
+                    Camera.main.gameObject.GetComponent<Changho.PlayerCameraSet>().CameraFollow();
+                    owntargetObject.GetComponent<PlayerController>().number = PhotonNetwork.LocalPlayer.ActorNumber;
+
+                    targetPlayer.CustomProperties[ConfigData.ACTIVE] = true;
+
+                }
+
+            }
 
           
         }
@@ -119,6 +142,39 @@ namespace Changho.Managers
             LoadPropertiesSet(true);
         }
 
+        public void UpScore(PhotonView ownPhotonView , int oponentNumber)
+        {
+            for(int i = 0;  i < PhotonNetwork.PlayerList.Length; i++)
+            {
+                if(PhotonNetwork.PlayerList[i].ActorNumber == oponentNumber)
+                {
+                    if (!(bool)PhotonNetwork.PlayerList[i].CustomProperties[ConfigData.ACTIVE])
+                    {
+                        return;
+                    }
+
+                    ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable();
+                    var playerProperties = PhotonNetwork.PlayerList[i].CustomProperties;
+                     
+                    foreach(var prop in playerProperties)
+                    {
+                        properties.Add(prop.Key, prop.Value);
+                    }
+
+                    properties[ConfigData.ACTIVE] = false;
+
+                    PhotonNetwork.PlayerList[i].SetCustomProperties(properties);
+                    break;
+                }
+
+            }
+
+            int num = ownPhotonView.Owner.GetPlayerNumber();
+            KillManager.Instance.playerRankingDictionary[num].KillUp();
+            KillManager.Instance.RankCheck();
+        }
+
+        
 
         private void CreateCharacters()
         {
@@ -237,26 +293,17 @@ namespace Changho.Managers
             ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
 
             props.Add(ConfigData.CHARACTER, localProps[ConfigData.CHARACTER]);
+            props.Add(ConfigData.ACTIVE, true);
             props.Add(ConfigData.LOAD, value);
 
             PhotonNetwork.LocalPlayer.SetCustomProperties(props);
 
         }
 
-        //private void ExitPropertesSet()
-        //{
-        //    var localProps = PhotonNetwork.LocalPlayer.CustomProperties;
-        //    ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
-
-        //    props.Add(ConfigData.CHARACTER, localProps[ConfigData.CHARACTER]);
-        //    props.Add(ConfigData.Exit, true);
-        //    PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-        //    MasterClientExit();
-        //}
 
         private void MasterClientExit()
         {
-            Debug.Log("!1111");
+            
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
 
