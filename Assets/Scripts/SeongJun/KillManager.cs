@@ -5,46 +5,79 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
-namespace SeongJun { 
+namespace SeongJun
+{
     public class KillManager : MonoBehaviourPun
     {
         public static KillManager Instance { get; private set; }
 
-        //플레이어들의 정보 받아오기 (이름같은거)
-        //각 플레이어의 이름을 TextUI로 생성
-        //킬한 사람의 점수를 올리는 함수 생성
-
         //랭킹 판넬
         public GameObject rankingPanel;
-        //플레이어 텍스트 오브젝트
-        public GameObject playerNamePrefeb;
 
-        //플레이어 리스트
-        public List<GameObject> playerList = new List<GameObject>();
+        //플레이어 오브젝트
+        public GameObject playerPrefeb;
+        public GameObject playerNamePrefeb;
+        
+        //플레이어 딕셔너리 <플레이어 번호, 플레이어 정보>
+        public Dictionary<int, PlayerRankText> playerRankingDictionary;
+
+        //플레이어들의 킬을 담을 리스트
+        public List<int> killList = new List<int>();
+
         private void Awake()
         {
             Instance = this;
         }
         private void Start()
         {
-            GameObject name = PhotonNetwork.Instantiate("playerNamePrefeb",Vector3.zero,Quaternion.identity);
-        }
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (playerRankingDictionary == null)
             {
-                //코드 합칠때 이거만 플레이어가 공격해서 다른 플레이어가 맞았을때 실행되게 하면 될듯?
-                playerList[0].gameObject.GetComponent<TestPlayer>().test();
+                playerRankingDictionary = new Dictionary<int, PlayerRankText>(); 
             }
+            PhotonNetwork.Instantiate("playerNamePrefeb", Vector3.zero, Quaternion.identity);
+         
+            
+            //↓이거는 테스트 하려고 만든 거니 프로젝트 합칠때 삭제해도 됌
+            PhotonNetwork.Instantiate("playerPrefeb", Vector3.zero, Quaternion.identity);
         }
-    
-        public void IsDead()
+        public void RankCheck()
         {
-            //마지막으로 때린 사람 기억하고.
-            //마지막으로 때린 사람의 점수 올리고.
-            //killmanager클래스에서 rankupdate함수 실행
-            //리스폰
+            photonView.RPC("RankCheckRPC", RpcTarget.All);
         }
-     
-    }
+        [PunRPC]
+        void RankCheckRPC()
+        {
+            //리스트에 킬 추가
+            for (int i = 0; i < playerRankingDictionary.Count; i++)
+            {
+                killList.Add(playerRankingDictionary[i].kill);
+            }
+
+            //가장 킬이 많은 순서대로 삽입.
+            for (int j = 0; j < killList.Count; j++)
+            {
+                int maxkill = -1;
+                int playerNumber = -1;
+                for (int k = 0; k < killList.Count; k++)
+                {
+                    if (killList[k] > maxkill) { 
+                        maxkill = killList[k];
+                        playerNumber = k;
+                    }
+                }
+                //플레이어에게 랭킹 부여
+                playerRankingDictionary[playerNumber].ranking = j;
+                playerRankingDictionary[playerNumber].RankUpdate();
+                killList[playerNumber] = -1;
+            }       
+            /*  원래 for문을 사용하여 한번에 랭킹을 업데이트 했는데 그냥 위에서 랭킹을 부여할때 업데이트해도 될 것 같아서 수정함(혹시모르니 남겨둔 코드. 문제없을시 삭제)
+                        for (int i = 0; i < testplayerRanks.Count; i++)
+                        {
+                            testplayerRanks[i].RankUpdate();
+                        }
+            */
+            //랭킹, 킬리스트 초기화
+            killList.Clear();
+        }
+    } 
 }
