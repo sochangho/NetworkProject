@@ -24,7 +24,6 @@ namespace SeongJun
         //플레이어들의 킬을 담을 리스트
         public List<int> killList = new List<int>();
 
-
         private void Awake()
         {
             Instance = this;
@@ -35,9 +34,7 @@ namespace SeongJun
             {
                 playerRankingDictionary = new Dictionary<int, PlayerRankText>(); 
             }
-
             PhotonNetwork.Instantiate("SeongJun/playerNamePrefeb", Vector3.zero, Quaternion.identity);
-
          
             
             //↓이거는 테스트 하려고 만든 거니 프로젝트 합칠때 삭제해도 됌
@@ -72,13 +69,8 @@ namespace SeongJun
                 playerRankingDictionary[playerNumber].ranking = j;
                 playerRankingDictionary[playerNumber].RankUpdate();
                 killList[playerNumber] = -1;
-            }       
-            /*  원래 for문을 사용하여 한번에 랭킹을 업데이트 했는데 그냥 위에서 랭킹을 부여할때 업데이트해도 될 것 같아서 수정함(혹시모르니 남겨둔 코드. 문제없을시 삭제)
-                        for (int i = 0; i < testplayerRanks.Count; i++)
-                        {
-                            testplayerRanks[i].RankUpdate();
-                        }
-            */
+            }
+         
             //랭킹, 킬리스트 초기화
             killList.Clear();
         }
