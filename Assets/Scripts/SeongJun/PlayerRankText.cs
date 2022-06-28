@@ -28,9 +28,9 @@ namespace SeongJun {
             }
         }
         public void Start()
-        {   
+        {
             //객체 참조
-            RT=gameObject.GetComponent<RectTransform>();
+            RT = gameObject.GetComponent<RectTransform>();
 
             //이 오브젝트를 killManager의 rankingPanel오브젝트의 자식으로 설정한다.
             transform.SetParent(KillManager.Instance.rankingPanel.transform);
@@ -43,7 +43,7 @@ namespace SeongJun {
 
             //이 오브젝트의 위치를 랭킹에 맞게 설정한다.
             transform.localScale = Vector3.one;
-            RT.anchoredPosition = new Vector3(0, -30 * (ranking + 1),0);
+            RT.anchoredPosition = new Vector3(0, -30 * (ranking + 1), 0);
 
             //자신의 오브젝트는 항상 앞에서 보이게
             gameObject.transform.SetAsFirstSibling();
@@ -102,7 +102,29 @@ namespace SeongJun {
         {
             playerNameText.text = name;
             killText.text ="0";
-            KillManager.Instance.playerRankingDictionary.Add(photonView.Owner.GetPlayerNumber(), this);
+
+          Photon.Realtime.Player player = null;
+            for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+            {
+
+                if(name == PhotonNetwork.PlayerList[i].NickName)
+                {
+
+                    player = PhotonNetwork.PlayerList[i];
+                }
+
+            }
+
+            //player.GetPlayerNumber
+
+            // Debug.Log(name + " : " + key);
+            // KillManager.Instance.playerRankingDictionary.Add(key, this);
+            Debug.Log(photonView.Owner.GetPlayerNumber());
+            KillManager.Instance.playerRankingDictionary.Add(player.GetPlayerNumber(), this);
         }
+
+     
+
+
     }
 }

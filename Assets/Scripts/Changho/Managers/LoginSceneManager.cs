@@ -30,7 +30,7 @@ namespace Changho.Managers
         {
             Debug.Log(PhotonNetwork.LocalPlayer.NickName + " : Master Connect");
             iinfomation.ServerInfomation(PhotonNetwork.LocalPlayer.NickName + " : Master Connect");
-            TransitionScene("LobbyScene");
+            PhotonNetwork.LoadLevel("LobbyScene");
             PhotonNetwork.JoinLobby();
 
         }

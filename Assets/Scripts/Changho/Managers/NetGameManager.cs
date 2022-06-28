@@ -1,23 +1,44 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 using Photon.Realtime;
 using Photon.Pun;
 using Photon.Pun.UtilityScripts;
 
+using Changho.UI;
+
+
 namespace Changho.Managers
 {
     public class NetGameManager : GamePhotonManager<NetGameManager>
     {
+        public int count;
+        public int gamePlayTime;
 
         public List<Transform> characterSpwanList;
 
-        private void Start()
+
+        [SerializeField]
+        private Timer timer;
+
+        [SerializeField]
+        private GameEndPopup endPopup;
+
+        [SerializeField]
+        private Transform createParent;
+
+        [SerializeField]
+        private PhotonView owntargetObject;
+
+
+        public override void Awake()
         {
-            Debug.Log("dddddd");
+           base.Awake();
             GameOwnPlayerInit();
         }
+   
 
 
 
@@ -28,35 +49,74 @@ namespace Changho.Managers
 
             if (changedProps.ContainsKey(ConfigData.LOAD))
             {
-                if (CheckAllPlayerLoadLevel())
+                if ((bool)changedProps[ConfigData.LOAD])
                 {
-                   
-                    //게임시작
-                    CreateCharacters();
+                    GameStartPlayerLoad();
                 }
                 else
                 {
-                    
+                    GameEndPlayerLoad();
                 }
             }
+
+            
+
+          
         }
 
         #endregion
 
 
 
+        IEnumerator CountBeforeGameStart()
+        {
+            int time = -1;
+            WaitForSeconds wait = new WaitForSeconds(1.0f);
+
+            while(time < count)
+            {
+
+                time += 1;
+
+                timer.BeforeGameTextSet(time.ToString());
+
+                yield return wait;
+
+            }
+
+            CreateCharacters();
+
+        }
+
+        IEnumerator GamePlayTimeRoutin()
+        {
+
+            int time = -1;
+
+            WaitForSeconds wait = new WaitForSeconds(1.0f);
+
+
+            while(time < gamePlayTime)
+            {
+                time += 1;
+
+
+                timer.GameCountDownTextSet(time, gamePlayTime);
+                yield return wait;
+
+            }
+
+            //게임 종료 
+
+            LoadPropertiesSet(false);
+        }
+
+
+
         public void GameOwnPlayerInit()
         {
 
-           var localProps = PhotonNetwork.LocalPlayer.CustomProperties;
-           ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
-
-           props.Add(ConfigData.CHARACTER, localProps[ConfigData.CHARACTER]);
-           props.Add(ConfigData.LOAD, true);
-
-           PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-
-         
+            LoadPropertiesSet(true);
         }
 
 
@@ -83,25 +143,49 @@ namespace Changho.Managers
 
 
 
-            string path = string.Format("Changho/Prefaps/Characters/{0}",playerName);
-            PhotonNetwork.Instantiate(path, characterSpwanList[index].position, characterSpwanList[index].rotation);
 
+
+            if (owntargetObject == null)
+            {
+
+                string path = string.Format("Changho/Prefaps/Characters/{0}", playerName);
+                var go = PhotonNetwork.Instantiate(path, characterSpwanList[index].position, characterSpwanList[index].rotation);
+
+                owntargetObject = go.GetComponent<PhotonView>();
+                Camera.main.gameObject.AddComponent<Changho.PlayerCameraSet>().CameraFollow();
+                owntargetObject.GetComponent<PlayerController>().number = PhotonNetwork.LocalPlayer.ActorNumber;
+            }
+            StartCoroutine(GamePlayTimeRoutin());
 
         }
 
 
         private bool CheckAllPlayerLoadLevel()
         {
-            return CountPlayer() == PhotonNetwork.PlayerList.Length;
+            return CountPlayer(ConfigData.LOAD) == PhotonNetwork.PlayerList.Length;
         }
 
-        private int CountPlayer()
+        private bool CheckAllPlayerEndLoadLevel()
+        {
+
+            return CountPlayer(ConfigData.LOAD) == 0;
+        }
+
+        private bool CheckAllPlayerExit()
+        {
+            return CountPlayer(ConfigData.Exit) == PhotonNetwork.PlayerList.Length;
+        }
+
+      
+
+
+        private int CountPlayer(string key )
         {
             int count = 0;
             for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
             {
                 object value; 
-                if(PhotonNetwork.PlayerList[i].CustomProperties.TryGetValue(ConfigData.LOAD , out value))
+                if(PhotonNetwork.PlayerList[i].CustomProperties.TryGetValue(key , out value))
                 {
                     if ((bool)value)
                     {
@@ -114,7 +198,7 @@ namespace Changho.Managers
             return count;
         }
 
-
+        
         private string PlayerLoad(Player player)
         {
 
@@ -144,6 +228,94 @@ namespace Changho.Managers
 
             return playerName;
         }
+
+
+        private void LoadPropertiesSet(bool value)
+        {
+            Debug.Log("생성 : " + value);
+            var localProps = PhotonNetwork.LocalPlayer.CustomProperties;
+            ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
+
+            props.Add(ConfigData.CHARACTER, localProps[ConfigData.CHARACTER]);
+            props.Add(ConfigData.LOAD, value);
+
+            PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+
+        }
+
+        //private void ExitPropertesSet()
+        //{
+        //    var localProps = PhotonNetwork.LocalPlayer.CustomProperties;
+        //    ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
+
+        //    props.Add(ConfigData.CHARACTER, localProps[ConfigData.CHARACTER]);
+        //    props.Add(ConfigData.Exit, true);
+        //    PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+        //    MasterClientExit();
+        //}
+
+        private void MasterClientExit()
+        {
+            Debug.Log("!1111");
+            if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+
+                if (!PhotonNetwork.CurrentRoom.IsOpen)
+                {
+                    PhotonNetwork.CurrentRoom.IsOpen = true;
+
+                }
+
+                if (!PhotonNetwork.CurrentRoom.IsVisible)
+                {
+
+                    PhotonNetwork.CurrentRoom.IsVisible = true;
+                }
+
+                Debug.Log("마스터 클라이언트 ");
+                PhotonNetwork.DestroyAll();
+                TransitionScene("RoomScene");
+            }
+         
+
+
+
+        }
+
+
+        private void GameStartPlayerLoad()
+        {
+
+            if (CheckAllPlayerLoadLevel())
+            {
+
+                Debug.Log("플레이어 수 " + PhotonNetwork.PlayerList.Length);
+                //게임시작
+                StartCoroutine(CountBeforeGameStart());
+            }
+            else
+            {
+
+            }
+        }
+
+        private void GameEndPlayerLoad()
+        {
+
+            if (CheckAllPlayerEndLoadLevel())
+            {
+               GameEndPopup popup = Instantiate(endPopup);
+               popup.transform.parent = createParent;
+               popup.transform.GetComponent<RectTransform>().localPosition = new Vector2(0, 0);
+               popup.onClickExitEventAction = MasterClientExit;
+               
+             
+            }
+
+        }
+
+
+
 
     }
 }

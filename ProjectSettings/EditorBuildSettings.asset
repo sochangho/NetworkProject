@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/00. Scenes/ChanghoMap_Cube 1.unity
     guid: b9e48feac940792478b658cdef16e4a3
+  - enabled: 1
+    path: Assets/00. Scenes/ChanghoMap_Chess.unity
+    guid: cc972e89f54ca4047b149e0028507503
+  - enabled: 1
+    path: Assets/00. Scenes/ChanghoMap_Water.unity
+    guid: 7886902133216ea45939e2a71c302eef
   m_configObjects: {}

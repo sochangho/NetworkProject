@@ -36,7 +36,7 @@ namespace Changho.Managers {
         public override void OnLeftRoom()
         {
 
-            TransitionScene("LobbyScene");
+            PhotonNetwork.LoadLevel("LobbyScene");
             
         }
 
@@ -51,7 +51,11 @@ namespace Changho.Managers {
         }
 
 
-   
+        public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+        {
+            room.RoomPropertiesUpdate(propertiesThatChanged);
+        }
+
 
         #endregion
     }

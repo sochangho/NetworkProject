@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
@@ -8,29 +8,49 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 {
     private float hAxis;
     private float vAxis;
-
     public float speed;
-    private bool isHit;
-    private bool isTakeHit;
-    private bool isCanControll = true;
 
+    private bool isTakeHit;
+    public bool isCanControll = true;
+    public float detectSize;
+
+
+
+    public int number;
     Vector3 moveVec;
 
     Animator anim;
     Rigidbody rigid;
 
-    public WeaponBat bat;
+    Collider other;
+
+    FieldOfView fieldOfView;
+    ICommand attackCommand;
+    ObjChecker objChecker;
+
+    public Transform dotPos;
+
+    public ParticleSystem deadEffect;
+
+
+
+
+
 
 
     private void Start()
     {
-
+        fieldOfView = GetComponent<FieldOfView>();
+        objChecker = new SphereObjChecker(this);
     }
 
     private void Awake()
     {
-        anim = GetComponentInChildren<Animator>();
+        anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody>();
+        attackCommand = GetComponent<AttackCommand>();
+
+
     }
 
     private void FixedUpdate()
@@ -44,97 +64,85 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
     private void Update()
     {
-
-
-
         if (!photonView.IsMine)
             return;
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            photonView.RPC("DoSwing", RpcTarget.All);
+            attackCommand.Execute();
+            //TriggerAnim("doHit"); 
         }
 
 
 
     }
+
 
     public void Moving()
     {
-        if (isCanControll)
-        {
-            hAxis = Input.GetAxisRaw("Horizontal");
-            vAxis = Input.GetAxisRaw("Vertical");
 
-            moveVec = new Vector3(hAxis, 0, vAxis).normalized;
-            transform.position += moveVec * speed * Time.deltaTime;
-
-            anim.SetBool("isRun", moveVec != Vector3.zero);
-
-            transform.LookAt(transform.position + moveVec);
-
-
-        }
-
-    }
-
-    [PunRPC]
-    public void DoSwing()
-    {
-        isHit = true;
-        isCanControll = false;
-
-        anim.SetTrigger("doHit");
-        bat.Use();
-
-        Invoke("DoSwingOut", 0.6f);
-
-    }
-
-    public void DoSwingOut()
-    {
-        isHit = false;
-        isCanControll = true;
-    }
-
-
-
-
-
-
-    private void OnTriggerEnter(Collider collider)
-    {
-        if (!photonView.IsMine)
+        if (!isCanControll)
             return;
 
-        if (collider.gameObject.tag == "Melee")
-        {
-            photonView.RPC("TakeHit", RpcTarget.All);
-        }
+        hAxis = Input.GetAxisRaw("Horizontal");
+        vAxis = Input.GetAxisRaw("Vertical");
+
+        // anim.SetBool("isRun",true);
+
+        anim.SetBool("isRun", hAxis != 0 || vAxis != 0);
+
+        moveVec = new Vector3(hAxis, 0, vAxis).normalized;
+        transform.LookAt(transform.position + moveVec);
+
+        if (objChecker.IsPerceive())
+            return;
+
+        transform.position += moveVec * speed * Time.deltaTime;
 
     }
 
 
+
+    public void Attack()
+    {
+        fieldOfView.FindVisibleTargets();
+    }
+
+    public void Hit(Collider collider)
+    {
+        photonView.RPC("TakeHit", RpcTarget.All, collider.transform.root.forward.x, collider.transform.root.forward.z);
+    }
+
     [PunRPC]
-    public void TakeHit()
+    public void TakeHit(float _x, float _z)
     {
         isTakeHit = true;
         isCanControll = false;
 
-
+        Vector3 direction = new Vector3(_x, 4, _z);
         anim.SetBool("isTakeHit", true);
-        rigid.AddForce(Vector3.up * 3, ForceMode.Impulse);
-        Invoke("TakeHitOut", 3.0f);
+        rigid.velocity = direction.normalized * 3;
+
+        StopCoroutine("CEffectDelay");
+        StartCoroutine("CEffectDelay");
     }
-    public void TakeHitOut()
+
+    IEnumerator CEffectDelay()
     {
-        isTakeHit = false;
-        isCanControll = true;
+        yield return new WaitForSeconds(0.25f);
+
+        Destroy(gameObject);
+
+        Instantiate(deadEffect, transform.position, Quaternion.identity);
     }
 
 
 
 
+    public void TriggerAnim(string name)
+    {
+        anim.SetTrigger(name);
+    }
 
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

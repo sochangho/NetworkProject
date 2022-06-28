@@ -7,6 +7,12 @@ public class ConfigData
     public const string READY = "ready";
     public const string LOAD = "load";
     public const string CHARACTER = "character";
+    public const string Exit = "exit";
+    public const string MAP = "map";
+
+
+
+
 }
 
 
@@ -18,4 +24,13 @@ public enum CharacterType
      type4
 
     
+}
+
+
+public enum MapType
+{
+    CubeMap,
+    CheseMap,
+    WaterMap
+
 }

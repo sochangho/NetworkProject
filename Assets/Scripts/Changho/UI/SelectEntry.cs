@@ -67,7 +67,7 @@ namespace Changho.UI
 
             
 
-            CharaterInfo[] charaterInfos =  Resources.LoadAll<CharaterInfo>("Changho/Prefaps/Characters");
+            CharaterInfo[] charaterInfos =  Resources.LoadAll<CharaterInfo>("Changho/Prefaps/Characters/RoomScene");
 
 
             Debug.Log(charaterInfos.Length);
@@ -78,8 +78,7 @@ namespace Changho.UI
                 {
                     
                    GameObject obj  = Instantiate(characterInfo).gameObject;
-                   obj.GetComponent<Rigidbody>().useGravity = false;
-                    obj.GetComponent<CapsuleCollider>().enabled = false;
+                  
                    obj.transform.parent = characterTransform;
                    obj.transform.localPosition = Vector3.zero;
                    obj.transform.localScale = Vector3.one;

@@ -106,7 +106,7 @@ namespace Changho.Room
 
             GameObject go = null ;
 
-            Changho.Data.CharaterInfo[] charaterInfos = Resources.LoadAll<Changho.Data.CharaterInfo>("Changho/Prefaps/Characters");
+            Changho.Data.CharaterInfo[] charaterInfos = Resources.LoadAll<Changho.Data.CharaterInfo>("Changho/Prefaps/Characters/RoomScene");
 
            
 
