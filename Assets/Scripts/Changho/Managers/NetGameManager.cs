@@ -20,6 +20,7 @@ namespace Changho.Managers
         public List<Transform> characterSpwanList;
 
 
+
         [SerializeField]
         private Timer timer;
 
@@ -32,6 +33,7 @@ namespace Changho.Managers
         [SerializeField]
         private PhotonView owntargetObject;
 
+        
 
         public override void Awake()
         {
@@ -53,7 +55,7 @@ namespace Changho.Managers
                 
                 if ((bool)changedProps[ConfigData.LOAD])
                 {
-                    Debug.Log("ddd");
+                    
                     GameStartPlayerLoad();
                 }
                 else
@@ -62,27 +64,6 @@ namespace Changho.Managers
                 }
             }
 
-            if (changedProps.ContainsKey(ConfigData.ACTIVE))
-            {
-                if (!(bool)changedProps[ConfigData.ACTIVE] && targetPlayer.IsLocal)
-                {
-                    //리스폰
-                    string playerName = PlayerLoad(targetPlayer);
-                    string path = string.Format("Changho/Prefaps/Characters/{0}", playerName);
-
-                    int randomIndex = Random.Range(0, characterSpwanList.Count);
-
-                    var go = PhotonNetwork.Instantiate(path, characterSpwanList[randomIndex].position, characterSpwanList[randomIndex].rotation);
-
-                    owntargetObject = go.GetComponent<PhotonView>();
-                    Camera.main.gameObject.GetComponent<Changho.PlayerCameraSet>().CameraFollow();
-                    owntargetObject.GetComponent<PlayerController>().number = PhotonNetwork.LocalPlayer.ActorNumber;
-
-                    targetPlayer.CustomProperties[ConfigData.ACTIVE] = true;
-
-                }
-
-            }
 
           
         }
@@ -144,29 +125,10 @@ namespace Changho.Managers
 
         public void UpScore(PhotonView ownPhotonView , int oponentNumber)
         {
-            for(int i = 0;  i < PhotonNetwork.PlayerList.Length; i++)
+
+            if (!ownPhotonView.IsMine)
             {
-                if(PhotonNetwork.PlayerList[i].ActorNumber == oponentNumber)
-                {
-                    if (!(bool)PhotonNetwork.PlayerList[i].CustomProperties[ConfigData.ACTIVE])
-                    {
-                        return;
-                    }
-
-                    ExitGames.Client.Photon.Hashtable properties = new ExitGames.Client.Photon.Hashtable();
-                    var playerProperties = PhotonNetwork.PlayerList[i].CustomProperties;
-                     
-                    foreach(var prop in playerProperties)
-                    {
-                        properties.Add(prop.Key, prop.Value);
-                    }
-
-                    properties[ConfigData.ACTIVE] = false;
-
-                    PhotonNetwork.PlayerList[i].SetCustomProperties(properties);
-                    break;
-                }
-
+                return;
             }
 
             int num = ownPhotonView.Owner.GetPlayerNumber();
@@ -174,7 +136,37 @@ namespace Changho.Managers
             KillManager.Instance.RankCheck();
         }
 
+        public void RespwanRandomPosSet(GameObject respwanObj)
+        {
+            int randomIndex = Random.Range(0, characterSpwanList.Count);
+            respwanObj.transform.position = characterSpwanList[randomIndex].position;
+            respwanObj.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        }
         
+        public void Respwan(GameObject respwanObj)
+        {
+          
+            StartCoroutine(SecondAfterRespwan(respwanObj, 2));
+        }
+
+        IEnumerator SecondAfterRespwan(GameObject respwanObj , float second)
+        {
+            yield return new WaitForSeconds(second);
+
+
+           respwanObj.GetComponent<CapsuleCollider>().enabled = true;
+
+            for (int i = 0; i < respwanObj.transform.childCount; i++)
+            {
+               respwanObj.transform.GetChild(i).gameObject.SetActive(true);
+            }
+            respwanObj.GetComponent<PlayerController>().isCanControll = true;
+            respwanObj.GetComponent<Rigidbody>().useGravity = true;
+            respwanObj.GetComponent<Animator>().enabled = false;
+            respwanObj.GetComponent<Animator>().enabled = true;
+        }
+
+
 
         private void CreateCharacters()
         {
@@ -293,7 +285,7 @@ namespace Changho.Managers
             ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable();
 
             props.Add(ConfigData.CHARACTER, localProps[ConfigData.CHARACTER]);
-            props.Add(ConfigData.ACTIVE, true);
+            
             props.Add(ConfigData.LOAD, value);
 
             PhotonNetwork.LocalPlayer.SetCustomProperties(props);

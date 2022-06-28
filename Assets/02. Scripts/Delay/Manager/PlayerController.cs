@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
 
 
-
+   
 
 
     private void Start()
@@ -131,9 +131,20 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     {
         yield return new WaitForSeconds(0.25f);
 
-        Destroy(gameObject);
-
+        //Destroy(gameObject);
+        
+        
         Instantiate(deadEffect, transform.position, Quaternion.identity);
+        Changho.Managers.NetGameManager.Instance.Respwan(this.gameObject);
+        Changho.Managers.NetGameManager.Instance.RespwanRandomPosSet(this.gameObject);
+        GetComponent<Rigidbody>().useGravity = false;
+        GetComponent<CapsuleCollider>().enabled = false;
+        
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).gameObject.SetActive(false);
+        }
+
     }
 
 
@@ -149,6 +160,39 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     {
 
     }
+
+
+     void OnTriggerEnter(Collider other)
+    {
+     if(other.tag == "Fall")
+        {
+
+            photonView.RPC("FallPlayer", RpcTarget.All);
+        }
+        
+    }
+
+
+
+    [PunRPC]
+    public void FallPlayer()
+    {
+
+
+        Debug.Log("FallPlayer");
+        GetComponent<Rigidbody>().useGravity = false;
+        GetComponent<CapsuleCollider>().enabled = false;
+        
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).gameObject.SetActive(false);
+        }
+
+        gameObject.GetComponent<PlayerController>().isCanControll = false;
+        Changho.Managers.NetGameManager.Instance.Respwan(gameObject);
+
+    }
+
 
 
 }
