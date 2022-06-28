@@ -11,6 +11,8 @@ namespace SeongJun {
         IEnumerator stop;
         public int kill;
         public int ranking;
+        public Sprite[] backGroundColor;
+        public GameObject backGround;
         public Text playerNameText;
         public Text killText;
         public RectTransform RT;
@@ -28,9 +30,9 @@ namespace SeongJun {
             }
         }
         public void Start()
-        {
+        {   
             //객체 참조
-            RT = gameObject.GetComponent<RectTransform>();
+            RT=gameObject.GetComponent<RectTransform>();
 
             //이 오브젝트를 killManager의 rankingPanel오브젝트의 자식으로 설정한다.
             transform.SetParent(KillManager.Instance.rankingPanel.transform);
@@ -43,7 +45,7 @@ namespace SeongJun {
 
             //이 오브젝트의 위치를 랭킹에 맞게 설정한다.
             transform.localScale = Vector3.one;
-            RT.anchoredPosition = new Vector3(0, -30 * (ranking + 1), 0);
+            RT.anchoredPosition = new Vector3(-40, (-30 * ranking) - 15 ,0);
 
             //자신의 오브젝트는 항상 앞에서 보이게
             gameObject.transform.SetAsFirstSibling();
@@ -79,7 +81,7 @@ namespace SeongJun {
             /*자신의 위치와 목표위치의 차이가 0.01보다 작으면 종료*/
             while (0.1f <= minDistance)
             {
-                if (RT.anchoredPosition.y < -30 * (ranking + 1))
+                if (RT.anchoredPosition.y < (-30 * ranking) - 15)
                 {
                     //크기 크게
                     //위로 이동
@@ -90,41 +92,24 @@ namespace SeongJun {
                     y -= speed * 0.01f;
                 }
 
-                RT.anchoredPosition = new Vector3(0, y, 0);
-                minDistance = Vector3.Distance(RT.anchoredPosition, new Vector3(0, -30 * (ranking + 1), 0));
+                RT.anchoredPosition = new Vector3(-40, y, 0);
+                minDistance = Vector3.Distance(RT.anchoredPosition, new Vector3(-40, (-30 * ranking) - 15, 0));
                 yield return null;
             }
             //반복문이 끝나고 약간의 오차가 있을것을 대비하여 자신의 위치를 목표위치로 설정
-            RT.anchoredPosition = new Vector3(0, -30 * (ranking + 1), 0);
+            RT.anchoredPosition = new Vector3(-40, (-30 * ranking) - 15, 0);
         }
 
         public void SetText(string name)
         {
+            //이름을 설정한대로 적용
             playerNameText.text = name;
+            //킬은 0으로 초기화
             killText.text ="0";
-
-          Photon.Realtime.Player player = null;
-            for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
-            {
-
-                if(name == PhotonNetwork.PlayerList[i].NickName)
-                {
-
-                    player = PhotonNetwork.PlayerList[i];
-                }
-
-            }
-
-            //player.GetPlayerNumber
-
-            // Debug.Log(name + " : " + key);
-            // KillManager.Instance.playerRankingDictionary.Add(key, this);
-            Debug.Log(photonView.Owner.GetPlayerNumber());
-            KillManager.Instance.playerRankingDictionary.Add(player.GetPlayerNumber(), this);
+            //플레이어가 들어온 순서대로 색깔이 다른 이미지를 적용함.
+            backGround.GetComponent<Image>().sprite = backGroundColor[photonView.Owner.GetPlayerNumber()];
+            //마지막으로 killManager의 딕셔너리에 이 오브젝트의 정보를 추가함.
+            KillManager.Instance.playerRankingDictionary.Add(photonView.Owner.GetPlayerNumber(), this);
         }
-
-     
-
-
     }
 }
