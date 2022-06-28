@@ -7,6 +7,7 @@ namespace SeongJun
 {
     public class TestPlayer : MonoBehaviourPun
     {
+        /*
         void Update()
         {
             //if (!photonView.IsMine) { return; }
@@ -16,5 +17,6 @@ namespace SeongJun
             //    KillManager.Instance.RankCheck();
             //}
         }
+        */
     }
 }

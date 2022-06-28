@@ -865,7 +865,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   count: 3
-  gamePlayTime: 5
+  gamePlayTime: 60
   characterSpwanList:
   - {fileID: 642782153}
   - {fileID: 2401138}

@@ -474,7 +474,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
-  bat: {fileID: 8210536859789967774}
+  isCanControll: 1
+  detectSize: 0
+  number: 0
+  dotPos: {fileID: 0}
+  deadEffect: {fileID: 0}
 --- !u!114 &4925047715282553402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -532,19 +536,19 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: isRun
   - Type: 9
     SynchronizeType: 0
     Name: doHit
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: isTakeHit
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: isHit
   m_SynchronizeLayers:
-  - SynchronizeType: 0
+  - SynchronizeType: 1
     LayerIndex: 0
 --- !u!114 &-2674835106602113305
 MonoBehaviour:
@@ -762,7 +766,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 4300000, guid: 02dd6406ed1ebc248b2fafd0485e0de9, type: 3}
+  m_Mesh: {fileID: 4300000, guid: f6821c8cf1bbfab4db2b8c3dbb985894, type: 3}
   m_Bones:
   - {fileID: 1921597139972602656}
   - {fileID: 1921597139972602628}
@@ -1055,7 +1059,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rate: 0
-  meleeArea: {fileID: 1686889275395397438}
 --- !u!1 &5415007324601167785
 GameObject:
   m_ObjectHideFlags: 0

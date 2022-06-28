@@ -9,10 +9,16 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     private float hAxis;
     private float vAxis;
     public float speed;
+    private float defaultSpeed;
+    public TrailRenderer trailEffect;
+
 
     private bool isTakeHit;
+    private bool isDash;
+    
     public bool isCanControll = true;
     public float detectSize;
+
 
 
 
@@ -31,6 +37,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public Transform dotPos;
 
     public ParticleSystem deadEffect;
+    //public ParticleSystem buffEffect;
 
 
 
@@ -40,6 +47,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
     private void Start()
     {
+        isDash = true;
+        defaultSpeed = speed;
         fieldOfView = GetComponent<FieldOfView>();
         objChecker = new SphereObjChecker(this);
     }
@@ -70,12 +79,41 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         if (Input.GetKeyDown(KeyCode.Space))
         {
             attackCommand.Execute();
-            //TriggerAnim("doHit"); 
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift) && isDash == true)
+        {
+            trailEffect.enabled = true;
+            StartCoroutine(CDashTime());
+            
+        }
+        else
+        {
+            
+            defaultSpeed = speed;
         }
 
 
 
     }
+
+    IEnumerator CDashTime()
+    {
+
+        defaultSpeed = 3;
+        yield return new WaitForSeconds(0.8f);
+        trailEffect.enabled = false;
+        StartCoroutine(CDashCoolTime());
+    }
+    IEnumerator CDashCoolTime()
+    {
+        isDash = false;
+        
+        yield return new WaitForSeconds(5.0f);
+        isDash = true;
+        
+    }
+    
 
 
     public void Moving()
@@ -87,7 +125,27 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         hAxis = Input.GetAxisRaw("Horizontal");
         vAxis = Input.GetAxisRaw("Vertical");
 
-        // anim.SetBool("isRun",true);
+        anim.SetBool("isRun", hAxis != 0 || vAxis != 0);
+
+        moveVec = new Vector3(hAxis, 0, vAxis).normalized;
+        transform.LookAt(transform.position + moveVec);
+
+        if (objChecker.IsPerceive())
+            return;
+
+        transform.position += moveVec * defaultSpeed * Time.deltaTime;
+
+    }
+
+    public void Dash()
+    {
+        if (!isCanControll)
+            return;
+
+        defaultSpeed = 1;
+
+        hAxis = Input.GetAxisRaw("Horizontal");
+        vAxis = Input.GetAxisRaw("Vertical");
 
         anim.SetBool("isRun", hAxis != 0 || vAxis != 0);
 
@@ -97,8 +155,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         if (objChecker.IsPerceive())
             return;
 
-        transform.position += moveVec * speed * Time.deltaTime;
-
+        transform.position += moveVec * defaultSpeed;
     }
 
 
@@ -106,11 +163,18 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public void Attack()
     {
         fieldOfView.FindVisibleTargets();
+
+        if (!photonView.IsMine) 
+        { return; }
+
+        SeongJun.KillManager.Instance.playerRankingDictionary[photonView.Owner.GetPlayerNumber()].KillUp();
+        SeongJun.KillManager.Instance.RankCheck();
     }
 
     public void Hit(Collider collider)
     {
         photonView.RPC("TakeHit", RpcTarget.All, collider.transform.root.forward.x, collider.transform.root.forward.z);
+        
     }
 
     [PunRPC]
