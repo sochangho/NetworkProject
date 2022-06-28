@@ -43,6 +43,7 @@ public class FieldOfView : MonoBehaviour
                     }
 
                targetsInViewRadius[i].GetComponent<PlayerController>().Hit(this.gameObject.GetComponent<Collider>());
+               
 
             }
             }
