@@ -62,12 +62,11 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7c7573181d27d46169827ccad7cd1272, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0a6989b691b475f418d5eb488f7cca8b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -137,13 +136,12 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 257535799f80b4693a4c361faba5aa09, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 5144d2dca7ddddd4781a54e44738900b, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -216,12 +214,11 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 90b914bf4f4d349f8b318a660560f7f3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0a6989b691b475f418d5eb488f7cca8b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -240,16 +237,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 4220345828509899085}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a941a50d803b2b4e9b9fc7e3797f106, type: 3}
+  m_Script: {fileID: 11500000, guid: 4076def4747b1bc44b1ae37281fb06f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   kill: 0
   ranking: 0
   backGroundColor:
-  - {fileID: 21300000, guid: 397588afa7f724588a5adb0cbc80fe56, type: 3}
-  - {fileID: 21300000, guid: 6095364454bc04bdb95879a0950ebc0e, type: 3}
-  - {fileID: 21300000, guid: 63dd75321b8a8487098a524ea16c8097, type: 3}
-  - {fileID: 21300000, guid: 3e9636f3750334c52bf3bb633343e629, type: 3}
+  - {fileID: 21300000, guid: 6d51030ebd4160d479bc31b849e477e1, type: 3}
+  - {fileID: 21300000, guid: 2fc5d0672bc17fd4cbe9410fec9f1cea, type: 3}
+  - {fileID: 21300000, guid: eccaea281a4828d48a28c651f0d38ab6, type: 3}
+  - {fileID: 21300000, guid: 6e52a069d7091ce4a85d146c4c484731, type: 3}
   backGround: {fileID: 29039638427122182}
   playerNameText: {fileID: 6782784048853585198}
   killText: {fileID: 5779146632023488604}
@@ -337,13 +334,12 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: de103b4fa240e436881894b6f0fc6c42, type: 3}
+    m_Font: {fileID: 12800000, guid: 954746d370bc8934299c8c8267543f4f, type: 3}
     m_FontSize: 12
     m_FontStyle: 0
     m_BestFit: 0
@@ -416,13 +412,12 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: de103b4fa240e436881894b6f0fc6c42, type: 3}
+    m_Font: {fileID: 12800000, guid: 954746d370bc8934299c8c8267543f4f, type: 3}
     m_FontSize: 12
     m_FontStyle: 0
     m_BestFit: 0

@@ -14,8 +14,7 @@ namespace SeongJun
         //랭킹 판넬
         public GameObject rankingPanel;
 
-        //플레이어 오브젝트
-        public GameObject playerPrefeb;
+        //플레이어이름UI
         public GameObject playerNamePrefeb;
         
         //플레이어 딕셔너리 <플레이어 번호, 플레이어 정보>
@@ -35,10 +34,6 @@ namespace SeongJun
                 playerRankingDictionary = new Dictionary<int, PlayerRankText>(); 
             }
             PhotonNetwork.Instantiate("SeongJun/playerNamePrefeb", Vector3.zero, Quaternion.identity);
-         
-            
-            //↓이거는 테스트 하려고 만든 거니 프로젝트 합칠때 삭제해도 됌
-            PhotonNetwork.Instantiate("SeongJun/playerPrefeb", Vector3.zero, Quaternion.identity);
         }
         public void RankCheck()
         {

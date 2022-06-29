@@ -5,15 +5,13 @@ using Photon.Pun;
 namespace SeongJun { 
 public class EndRankingUI : MonoBehaviourPun
     {
-    public GameObject GameEndPopUp;
         public GameObject Content;
 
-        private void Start()
+        private void OnEnable()
         {
-            Invoke("ActiveGameEndPopUp",2);
+            ActiveGameEndPopUp();
         }
         public void ActiveGameEndPopUp() {
-        GameEndPopUp.SetActive(true);
             for (int i = 0; i < KillManager.Instance.playerRankingDictionary.Count; i++)
             {
                 for (int j = 0; j < KillManager.Instance.playerRankingDictionary.Count; j++)

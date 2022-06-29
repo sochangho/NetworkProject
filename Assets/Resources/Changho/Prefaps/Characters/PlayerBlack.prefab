@@ -1048,7 +1048,6 @@ MonoBehaviour:
   dotPos: {fileID: 87366022057730970}
   deadEffect: {fileID: 2779868659368990069, guid: a693b69ea321385409d04bd804a5f8bf,
     type: 3}
-  buffEffect: {fileID: 0}
 --- !u!114 &5042341431027107199
 MonoBehaviour:
   m_ObjectHideFlags: 0
