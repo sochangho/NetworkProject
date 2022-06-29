@@ -9,21 +9,18 @@ namespace Changho.UI
 {
     public class GameEndPopup : Popup
     {
-
-
+        public GameObject GameEndPopUp;
         public UnityAction onClickExitEventAction;
-
-
 
         public void Start()
         {
             OnOpen();
         }
 
-
         public override void OnOpen()
         {
             base.OnOpen();
+            GameEndPopUp.SetActive(true);
             Invoke("OnClose", 3.0f);
 
         }
