@@ -33,13 +33,15 @@ namespace Changho.Managers
         [SerializeField]
         private PhotonView owntargetObject;
 
+
         
+        public Sprite[] sprites = new Sprite[(int)PlayerType.Size];
 
         public override void Awake()
         {
            base.Awake();
             GameOwnPlayerInit();
-            gamePlayTime = 3;
+            gamePlayTime = 60;
         }
    
         
@@ -67,6 +69,19 @@ namespace Changho.Managers
 
           
         }
+
+        public override void OnPlayerLeftRoom(Player otherPlayer)
+        {
+            Debug.Log("레프트룸 플레이어 수 " +  PhotonNetwork.PlayerList.Length);
+
+            if(PhotonNetwork.PlayerList.Length  == 1)
+            {
+                LoadPropertiesSet(false);
+            }
+
+           
+        }
+
 
         #endregion
 
@@ -123,6 +138,19 @@ namespace Changho.Managers
             LoadPropertiesSet(true);
         }
 
+        public Sprite FindPlayerSprite(int num)
+        {
+            
+                if(PhotonNetwork.LocalPlayer.ActorNumber == num)
+                {
+                    return sprites[(int)PlayerType.Own];
+                }
+
+            return sprites[(int)PlayerType.Oponent];
+        }
+
+
+
         public void UpScore(PhotonView ownPhotonView , int oponentNumber)
         {
 
@@ -155,7 +183,7 @@ namespace Changho.Managers
 
             for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
             {
-                if(playerActorNumber == PhotonNetwork.PlayerList[i].ActorNumber)
+                if(playerActorNumber == PhotonNetwork.PlayerList[i].ActorNumber && PhotonNetwork.PlayerList[i].IsLocal)
                 {
 
                     string playerName = PlayerLoad(PhotonNetwork.PlayerList[i]);
@@ -172,7 +200,9 @@ namespace Changho.Managers
                     if (PhotonNetwork.PlayerList[i].ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
                     {
                         owntargetObject = go.GetComponent<PhotonView>();
+                        
                         owntargetObject.GetComponent<PlayerController>().number = PhotonNetwork.LocalPlayer.ActorNumber;
+
                         Camera.main.gameObject.GetComponent<Changho.PlayerCameraSet>().CameraFollow();
                     }
 

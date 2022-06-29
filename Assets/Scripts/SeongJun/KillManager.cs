@@ -23,6 +23,9 @@ namespace SeongJun
         //플레이어들의 킬을 담을 리스트
         public List<int> killList = new List<int>();
 
+
+      
+
         private void Awake()
         {
             Instance = this;
@@ -48,6 +51,10 @@ namespace SeongJun
                 killList.Add(playerRankingDictionary[i].kill);
             }
 
+
+
+
+
             //가장 킬이 많은 순서대로 삽입.
             for (int j = 0; j < killList.Count; j++)
             {
@@ -55,7 +62,8 @@ namespace SeongJun
                 int playerNumber = -1;
                 for (int k = 0; k < killList.Count; k++)
                 {
-                    if (killList[k] > maxkill) { 
+                    if (killList[k] > maxkill)
+                    {
                         maxkill = killList[k];
                         playerNumber = k;
                     }
@@ -65,9 +73,12 @@ namespace SeongJun
                 playerRankingDictionary[playerNumber].RankUpdate();
                 killList[playerNumber] = -1;
             }
-         
+
             //랭킹, 킬리스트 초기화
             killList.Clear();
         }
-    } 
+    }
+    
+
+
 }

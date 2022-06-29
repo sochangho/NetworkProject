@@ -938,17 +938,20 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1948462661194852479}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a7cf5f7ce1a655140aa2531560626f85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
+  trailEffect: {fileID: 0}
   isCanControll: 1
   detectSize: 0
   number: 0
   dotPos: {fileID: 0}
   deadEffect: {fileID: 0}
+  gameNameUI: {fileID: 0}
+  playerName: 
 --- !u!114 &5042341431027107199
 MonoBehaviour:
   m_ObjectHideFlags: 0

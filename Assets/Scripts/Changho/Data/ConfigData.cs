@@ -33,3 +33,11 @@ public enum MapType
     WaterMap
 
 }
+
+public enum PlayerType
+{
+    Own,
+    Oponent,
+
+    Size
+}

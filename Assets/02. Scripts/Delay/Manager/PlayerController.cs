@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public float detectSize;
 
 
-
+    public Coroutine coroutine;
 
     public int number;
     Vector3 moveVec;
@@ -41,16 +41,35 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
 
 
+    public Changho.UI.PlayerGameNameUI gameNameUI;
 
-   
-
+    public string playerName;
 
     private void Start()
     {
+        
+        
+
         isDash = true;
         defaultSpeed = speed;
         fieldOfView = GetComponent<FieldOfView>();
         objChecker = new SphereObjChecker(this);
+
+
+        number = GetComponent<PhotonView>().Owner.ActorNumber;
+
+
+        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        {
+            if(PhotonNetwork.PlayerList[i].ActorNumber == number)
+            {
+                playerName = PhotonNetwork.PlayerList[i].NickName;
+            }
+        }
+
+
+        gameNameUI.SetPlayerNameText(playerName,
+            Changho.Managers.NetGameManager.Instance.FindPlayerSprite(number));
     }
 
     private void Awake()
@@ -59,7 +78,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         rigid = GetComponent<Rigidbody>();
         attackCommand = GetComponent<AttackCommand>();
 
-
+       
     }
 
     private void FixedUpdate()
@@ -172,12 +191,14 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
     public void Hit(Collider collider)
     {
+       
+
         photonView.RPC("TakeHit", RpcTarget.All, collider.transform.root.forward.x, collider.transform.root.forward.z);
         
     }
 
     [PunRPC]
-    public void TakeHit(float _x, float _z)
+    public void TakeHit(float _x, float _z )
     {
         isTakeHit = true;
         isCanControll = false;
@@ -186,8 +207,9 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         anim.SetBool("isTakeHit", true);
         rigid.velocity = direction.normalized * 3;
 
-        StopCoroutine("CEffectDelay");
-        StartCoroutine("CEffectDelay");
+      
+       StopCoroutine("CEffectDelay");      
+       StartCoroutine("CEffectDelay");
     }
 
     IEnumerator CEffectDelay()
@@ -199,8 +221,11 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         
         Instantiate(deadEffect, transform.position, Quaternion.identity);
         Destroy(gameObject);
-        Changho.Managers.NetGameManager.Instance.Respwan(number);
 
+     
+
+         Changho.Managers.NetGameManager.Instance.Respwan(number);
+        
 
     }
 
@@ -223,8 +248,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     {
      if(other.tag == "Fall")
         {
-
-            photonView.RPC("FallPlayer", RpcTarget.All);
+            
+            photonView.RPC("FallPlayer", RpcTarget.All );
         }
         
     }
@@ -238,8 +263,10 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
         Debug.Log("FallPlayer");
         Destroy(gameObject);
-        Changho.Managers.NetGameManager.Instance.Respwan(number);
 
+       
+       Changho.Managers.NetGameManager.Instance.Respwan(number);
+        
     }
 
 

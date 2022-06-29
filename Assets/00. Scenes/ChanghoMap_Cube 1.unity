@@ -950,6 +950,9 @@ MonoBehaviour:
     type: 3}
   createParent: {fileID: 818565867}
   owntargetObject: {fileID: 0}
+  sprites:
+  - {fileID: 21300000, guid: 2fc5d0672bc17fd4cbe9410fec9f1cea, type: 3}
+  - {fileID: 21300000, guid: 0a6989b691b475f418d5eb488f7cca8b, type: 3}
 --- !u!4 &1049768760
 Transform:
   m_ObjectHideFlags: 0
