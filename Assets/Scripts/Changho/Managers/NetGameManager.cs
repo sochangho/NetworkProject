@@ -39,7 +39,7 @@ namespace Changho.Managers
         {
            base.Awake();
             GameOwnPlayerInit();
-            gamePlayTime = 3;
+            gamePlayTime = 60;
         }
    
         
@@ -125,7 +125,6 @@ namespace Changho.Managers
 
         public void UpScore(PhotonView ownPhotonView , int oponentNumber)
         {
-
             if (!ownPhotonView.IsMine)
             {
                 return;

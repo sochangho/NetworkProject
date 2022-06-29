@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     private float defaultSpeed;
     public TrailRenderer trailEffect;
 
+    AudioSource audioSource;
+    // 1.대쉬, 2.스윙 , 3. 피격
+    public AudioClip[] audioCilpArray;
 
     private bool isTakeHit;
     private bool isDash;
@@ -50,6 +53,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         isDash = true;
         defaultSpeed = speed;
         fieldOfView = GetComponent<FieldOfView>();
+        audioSource = GetComponent<AudioSource>();
         objChecker = new SphereObjChecker(this);
     }
 
@@ -83,23 +87,21 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
         if (Input.GetKey(KeyCode.LeftShift) && isDash == true)
         {
+            if (trailEffect.enabled==false) {
+                //대쉬음 재생
+                audioSource.PlayOneShot(audioCilpArray[0]);
+            }
             trailEffect.enabled = true;
             StartCoroutine(CDashTime());
-            
         }
         else
         {
-            
             defaultSpeed = speed;
         }
-
-
-
     }
 
     IEnumerator CDashTime()
     {
-
         defaultSpeed = 3;
         yield return new WaitForSeconds(0.8f);
         trailEffect.enabled = false;
@@ -156,6 +158,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             return;
 
         transform.position += moveVec * defaultSpeed;
+
     }
 
 
@@ -164,6 +167,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     {
         fieldOfView.FindVisibleTargets();
 
+        //스윙음 재생
+        audioSource.PlayOneShot(audioCilpArray[1]);
         if (!photonView.IsMine) 
         { return; }
 
@@ -173,7 +178,6 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public void Hit(Collider collider)
     {
         photonView.RPC("TakeHit", RpcTarget.All, collider.transform.root.forward.x, collider.transform.root.forward.z);
-        
     }
 
     [PunRPC]
@@ -223,7 +227,6 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     {
      if(other.tag == "Fall")
         {
-
             photonView.RPC("FallPlayer", RpcTarget.All);
         }
         
@@ -234,8 +237,6 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void FallPlayer()
     {
-
-
         Debug.Log("FallPlayer");
         Destroy(gameObject);
         Changho.Managers.NetGameManager.Instance.Respwan(number);
