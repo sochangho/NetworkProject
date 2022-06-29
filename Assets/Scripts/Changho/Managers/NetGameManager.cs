@@ -39,7 +39,7 @@ namespace Changho.Managers
         {
            base.Awake();
             GameOwnPlayerInit();
-            gamePlayTime = 120;
+            gamePlayTime = 3;
         }
    
         
@@ -143,27 +143,45 @@ namespace Changho.Managers
             respwanObj.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
         
-        public void Respwan(GameObject respwanObj)
+        public void Respwan(int playerActorNumber)
         {
           
-            StartCoroutine(SecondAfterRespwan(respwanObj, 2));
+            StartCoroutine(SecondAfterRespwan(playerActorNumber, 2));
         }
 
-        IEnumerator SecondAfterRespwan(GameObject respwanObj , float second)
+        IEnumerator SecondAfterRespwan(int playerActorNumber , float second)
         {
             yield return new WaitForSeconds(second);
 
-
-           respwanObj.GetComponent<CapsuleCollider>().enabled = true;
-
-            for (int i = 0; i < respwanObj.transform.childCount; i++)
+            for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
             {
-               respwanObj.transform.GetChild(i).gameObject.SetActive(true);
+                if(playerActorNumber == PhotonNetwork.PlayerList[i].ActorNumber)
+                {
+
+                    string playerName = PlayerLoad(PhotonNetwork.PlayerList[i]);
+
+                    int index = Random.Range(0, characterSpwanList.Count);
+
+                   
+                    string path = string.Format("Changho/Prefaps/Characters/{0}", playerName);
+
+                    //GameObject playerObj = Resources.Load<GameObject>(path);
+
+                    var go =PhotonNetwork.Instantiate(path, characterSpwanList[index].position, characterSpwanList[index].rotation);
+
+                    if (PhotonNetwork.PlayerList[i].ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+                    {
+                        owntargetObject = go.GetComponent<PhotonView>();
+                        owntargetObject.GetComponent<PlayerController>().number = PhotonNetwork.LocalPlayer.ActorNumber;
+                        Camera.main.gameObject.GetComponent<Changho.PlayerCameraSet>().CameraFollow();
+                    }
+
+
+                    break;
+                }
+                
             }
-            respwanObj.GetComponent<PlayerController>().isCanControll = true;
-            respwanObj.GetComponent<Rigidbody>().useGravity = true;
-            respwanObj.GetComponent<Animator>().enabled = false;
-            respwanObj.GetComponent<Animator>().enabled = true;
+            
         }
 
 

@@ -167,8 +167,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         if (!photonView.IsMine) 
         { return; }
 
-        SeongJun.KillManager.Instance.playerRankingDictionary[photonView.Owner.GetPlayerNumber()].KillUp();
-        SeongJun.KillManager.Instance.RankCheck();
+     
     }
 
     public void Hit(Collider collider)
@@ -195,19 +194,13 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     {
         yield return new WaitForSeconds(0.25f);
 
-        //Destroy(gameObject);
+       
         
         
         Instantiate(deadEffect, transform.position, Quaternion.identity);
-        Changho.Managers.NetGameManager.Instance.Respwan(this.gameObject);
-        Changho.Managers.NetGameManager.Instance.RespwanRandomPosSet(this.gameObject);
-        GetComponent<Rigidbody>().useGravity = false;
-        GetComponent<CapsuleCollider>().enabled = false;
-        
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            transform.GetChild(i).gameObject.SetActive(false);
-        }
+        Destroy(gameObject);
+        Changho.Managers.NetGameManager.Instance.Respwan(number);
+
 
     }
 
@@ -244,16 +237,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
 
         Debug.Log("FallPlayer");
-        GetComponent<Rigidbody>().useGravity = false;
-        GetComponent<CapsuleCollider>().enabled = false;
-        
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            transform.GetChild(i).gameObject.SetActive(false);
-        }
-
-        gameObject.GetComponent<PlayerController>().isCanControll = false;
-        Changho.Managers.NetGameManager.Instance.Respwan(gameObject);
+        Destroy(gameObject);
+        Changho.Managers.NetGameManager.Instance.Respwan(number);
 
     }
 
