@@ -96,6 +96,7 @@ namespace Changho.UI
         public void ReadySet(bool value)
         {
             readyObject.SetActive(value);
+            textureValue.camera.GetComponent<RenderTextureCamera>().CharacterReadyAnim(value);
         }
 
         public void CharecterSet(CharactersCamRender.RenderTextureValue textureValue)

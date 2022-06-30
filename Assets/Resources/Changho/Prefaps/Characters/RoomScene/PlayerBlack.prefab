@@ -884,7 +884,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1948462661195150431}
   - component: {fileID: 1948462661187460017}
-  - component: {fileID: 7203584344506428664}
   - component: {fileID: 5042341431027107199}
   - component: {fileID: 3707574570949963059}
   - component: {fileID: 7401940940859323353}
@@ -922,7 +921,7 @@ Animator:
   m_GameObject: {fileID: 1948462661194852479}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8b48a1d2314e46d4f9300d5c62cc8aaf, type: 2}
+  m_Controller: {fileID: 9100000, guid: 6d089e6fe970dd5488266979f5425a62, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -931,27 +930,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &7203584344506428664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1948462661194852479}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7cf5f7ce1a655140aa2531560626f85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 1
-  trailEffect: {fileID: 0}
-  isCanControll: 1
-  detectSize: 0
-  number: 0
-  dotPos: {fileID: 0}
-  deadEffect: {fileID: 0}
-  gameNameUI: {fileID: 0}
-  playerName: 
 --- !u!114 &5042341431027107199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -971,7 +949,6 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 7203584344506428664}
   - {fileID: 3707574570949963059}
   - {fileID: 7401940940859323353}
   sceneViewId: 0

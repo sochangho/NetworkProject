@@ -15,12 +15,12 @@ EditorBuildSettings:
     path: Assets/00. Scenes/RoomScene.unity
     guid: 3eb9e1fc7b7166645b2c28a82ef2aed5
   - enabled: 1
-    path: Assets/00. Scenes/ChanghoMap_Cube 1.unity
-    guid: b9e48feac940792478b658cdef16e4a3
+    path: Assets/00. Scenes/InGameScenes/Chess.unity
+    guid: 2213ebd472d59d540a3c7f573616530a
   - enabled: 1
-    path: Assets/00. Scenes/ChanghoMap_Chess.unity
-    guid: cc972e89f54ca4047b149e0028507503
+    path: Assets/00. Scenes/InGameScenes/Cube.unity
+    guid: aad4e343bdb08fa49a45b2de9613a435
   - enabled: 1
-    path: Assets/00. Scenes/ChanghoMap_Water.unity
-    guid: 7886902133216ea45939e2a71c302eef
+    path: Assets/00. Scenes/InGameScenes/Water.unity
+    guid: 83dffbd7f8dede148a1b14f237bab038
   m_configObjects: {}

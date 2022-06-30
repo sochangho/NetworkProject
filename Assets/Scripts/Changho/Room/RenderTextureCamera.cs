@@ -28,6 +28,13 @@ public class RenderTextureCamera : MonoBehaviour
 
     }
 
+    public void CharacterReadyAnim(bool value)
+    {
+       Animator characteranim = characterObject.GetComponent<Animator>();
+       characteranim.SetBool("Ready", value);
+    }
+
+
 
 
 

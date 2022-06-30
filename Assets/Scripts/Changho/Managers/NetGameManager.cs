@@ -33,19 +33,18 @@ namespace Changho.Managers
         [SerializeField]
         private PhotonView owntargetObject;
 
-
+     
         
         public Sprite[] sprites = new Sprite[(int)PlayerType.Size];
-
+        public Changho.GameStart gameStart;
         public override void Awake()
         {
            base.Awake();
             GameOwnPlayerInit();
             gamePlayTime = 60;
         }
-   
-        
 
+    
 
         #region PhotonCallBacks
 
@@ -72,8 +71,7 @@ namespace Changho.Managers
 
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
-            Debug.Log("레프트룸 플레이어 수 " +  PhotonNetwork.PlayerList.Length);
-
+            
             if(PhotonNetwork.PlayerList.Length  == 1)
             {
                 LoadPropertiesSet(false);
@@ -86,27 +84,10 @@ namespace Changho.Managers
         #endregion
 
 
-
-        IEnumerator CountBeforeGameStart()
+        public void GamePlayTimeRoutinStart()
         {
-            int time = -1;
-            WaitForSeconds wait = new WaitForSeconds(1.0f);
-
-            while(time < count)
-            {
-
-                time += 1;
-
-                timer.BeforeGameTextSet(time.ToString());
-
-                yield return wait;
-
-            }
-
-            CreateCharacters();
-
+            StartCoroutine(GamePlayTimeRoutin());
         }
-
         IEnumerator GamePlayTimeRoutin()
         {
 
@@ -148,7 +129,19 @@ namespace Changho.Managers
 
             return sprites[(int)PlayerType.Oponent];
         }
+        public void PlayersIsContoller(bool value)
+        {
+           PlayerController[] playerControllers =  FindObjectsOfType<PlayerController>();
+            
+           foreach(PlayerController p in playerControllers)
+            {
+                if (p.number == PhotonNetwork.LocalPlayer.ActorNumber)
+                {
+                    p.isCanControll = value;
+                }
+            }
 
+        }
 
 
         public void UpScore(PhotonView ownPhotonView , int oponentNumber)
@@ -172,7 +165,8 @@ namespace Changho.Managers
         
         public void Respwan(int playerActorNumber)
         {
-          
+           
+
             StartCoroutine(SecondAfterRespwan(playerActorNumber, 2));
         }
 
@@ -249,9 +243,10 @@ namespace Changho.Managers
                 owntargetObject = go.GetComponent<PhotonView>();
                 Camera.main.gameObject.AddComponent<Changho.PlayerCameraSet>().CameraFollow();
                 owntargetObject.GetComponent<PlayerController>().number = PhotonNetwork.LocalPlayer.ActorNumber;
+                owntargetObject.GetComponent<PlayerController>().isCanControll = false;
             }
-            StartCoroutine(GamePlayTimeRoutin());
 
+            //StartCoroutine(GamePlayTimeRoutin());
         }
 
 
@@ -377,7 +372,7 @@ namespace Changho.Managers
 
                 Debug.Log("플레이어 수 " + PhotonNetwork.PlayerList.Length);
                 //게임시작
-                StartCoroutine(CountBeforeGameStart());
+                CreateCharacters();
             }
             else
             {

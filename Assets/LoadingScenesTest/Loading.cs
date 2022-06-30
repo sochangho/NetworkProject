@@ -13,7 +13,7 @@ public class Loading : MonoBehaviour
     [SerializeField]
     private Image progressBar;
 
-    void Start()
+    private void Start()
     {
         loading.gameObject.SetActive(true);
         StartCoroutine(CLoading());
@@ -31,7 +31,7 @@ public class Loading : MonoBehaviour
         
         //yield return StartCoroutine(Fade(true));
         //yield return new WaitForSeconds(1.0f);      
-        yield return StartCoroutine(CLoadingFill());     
+        yield return StartCoroutine(CLoadingFill(4f));     
         
                
     }
@@ -50,12 +50,14 @@ public class Loading : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+
+        Changho.Managers.NetGameManager.Instance.gameStart.UiGameStart();
     }
 
-    private IEnumerator CLoadingFill()
+    private IEnumerator CLoadingFill(float limit)
     {
         float timer = 0f;
-        while(timer <= 4f)
+        while(timer <= limit)
         {
             yield return null;
             timer += Time.unscaledDeltaTime * 1f;
@@ -63,4 +65,5 @@ public class Loading : MonoBehaviour
         }
         yield return StartCoroutine(Fade(false));
     }
+
 }

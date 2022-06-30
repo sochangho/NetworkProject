@@ -243,9 +243,9 @@ namespace Changho.Room
                 Debug.LogError("PlayerUpdate : Error");
                 return;
             }
-
-            ReadyUpdate(target, changedProps);
             CharacterUpdate(target, changedProps);
+            ReadyUpdate(target, changedProps);
+            
 
         }
 
