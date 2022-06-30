@@ -153,7 +153,6 @@ namespace Changho.Managers
 
         public void UpScore(PhotonView ownPhotonView , int oponentNumber)
         {
-
             if (!ownPhotonView.IsMine)
             {
                 return;

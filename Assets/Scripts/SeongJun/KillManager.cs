@@ -7,7 +7,7 @@ using Photon.Pun.UtilityScripts;
 using Photon.Realtime;
 namespace SeongJun
 {
-    public class KillManager : MonoBehaviourPun
+    public class KillManager : MonoBehaviourPunCallbacks
     {
         public static KillManager Instance { get; private set; }
 
@@ -38,6 +38,13 @@ namespace SeongJun
             }
             PhotonNetwork.Instantiate("SeongJun/playerNamePrefeb", Vector3.zero, Quaternion.identity);
         }
+
+        public override void OnPlayerLeftRoom(Player player)
+        {
+            playerRankingDictionary.Remove(player.ActorNumber-1);
+            RankCheck();
+        }
+
         public void RankCheck()
         {
             photonView.RPC("RankCheckRPC", RpcTarget.All);
