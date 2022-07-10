@@ -250,7 +250,6 @@ MonoBehaviour:
   backGround: {fileID: 29039638427122182}
   playerNameText: {fileID: 6782784048853585198}
   killText: {fileID: 5779146632023488604}
-  RT: {fileID: 0}
 --- !u!114 &1443152239270699670
 MonoBehaviour:
   m_ObjectHideFlags: 0

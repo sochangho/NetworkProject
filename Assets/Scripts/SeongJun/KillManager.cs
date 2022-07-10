@@ -21,7 +21,7 @@ namespace SeongJun
         public Dictionary<int, PlayerRankText> playerRankingDictionary;
 
         //플레이어들의 킬을 담을 리스트
-        public List<int> killList = new List<int>();
+        private List<int> killList = new List<int>();
 
 
       
@@ -39,6 +39,7 @@ namespace SeongJun
             PhotonNetwork.Instantiate("SeongJun/playerNamePrefeb", Vector3.zero, Quaternion.identity);
         }
 
+        //플레이어가 나가면 플레이어의 정보를 삭제하고 랭크를 다시 체크한다.
         public override void OnPlayerLeftRoom(Player player)
         {
             playerRankingDictionary.Remove(player.ActorNumber-1);
@@ -52,17 +53,13 @@ namespace SeongJun
         [PunRPC]
         void RankCheckRPC()
         {
-            //리스트에 킬 추가
+            //랭킹이 높은 순서대로 리스트에 킬 추가
             for (int i = 0; i < playerRankingDictionary.Count; i++)
             {
                 killList.Add(playerRankingDictionary[i].kill);
             }
 
-
-
-
-
-            //가장 킬이 많은 순서대로 삽입.
+            //가장 킬이 많은 순서대로
             for (int j = 0; j < killList.Count; j++)
             {
                 int maxkill = -1;
