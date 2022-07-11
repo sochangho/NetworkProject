@@ -1669,7 +1669,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 1
+  m_Text: 
 --- !u!222 &1939797128
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1839,4 +1839,3 @@ MonoBehaviour:
   rankingPanel: {fileID: 58366221}
   playerNamePrefeb: {fileID: 4220345828509899085, guid: a8d68ad02a90cf740929d6b74cae6177,
     type: 3}
-  killList: 

@@ -1341,7 +1341,6 @@ MonoBehaviour:
   rankingPanel: {fileID: 1838927957}
   playerNamePrefeb: {fileID: 4220345828509899085, guid: a8d68ad02a90cf740929d6b74cae6177,
     type: 3}
-  killList: 
 --- !u!4 &1162562413
 Transform:
   m_ObjectHideFlags: 0
@@ -1668,7 +1667,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 1
+  m_Text: 
 --- !u!222 &1651359496
 CanvasRenderer:
   m_ObjectHideFlags: 0
