@@ -11,11 +11,11 @@ namespace SeongJun
         public Button chatButton;
         public Text chatLog;
         public InputField inputField;
-        public ScrollRect scroll_rect = null;
+        private ScrollRect scrollRect = null;
         void Start()
         {
             PhotonNetwork.IsMessageQueueRunning = true;
-            scroll_rect = GameObject.FindObjectOfType<ScrollRect>();
+            scrollRect = GameObject.FindObjectOfType<ScrollRect>();
         }
         void Update()
         {
@@ -26,12 +26,7 @@ namespace SeongJun
         }
         public void ChatButtonOnClicked()
         {
-            //   if (inputField.text.Equals("")) 
-            //   { 
-            //       return;
-            //   }
-
-            string text = string.Format("{0} : {1}", PhotonNetwork.LocalPlayer.NickName, inputField.text);
+            string text = string.Format("   {0} : {1}", PhotonNetwork.LocalPlayer.NickName, inputField.text);
             photonView.RPC("Receive", RpcTarget.All, text);
             inputField.ActivateInputField();
             inputField.text = "";
@@ -40,7 +35,7 @@ namespace SeongJun
         public void Receive(string text)
         {
             chatLog.text += "\n" + text;
-            scroll_rect.verticalNormalizedPosition = 0;
+            scrollRect.verticalNormalizedPosition = 0;
         }
 
     }

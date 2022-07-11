@@ -386,10 +386,10 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: f430648c2d478f94c8fcda8ee00ccf36, type: 3}
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1050,6 +1050,7 @@ MonoBehaviour:
   sprites:
   - {fileID: 21300000, guid: 2fc5d0672bc17fd4cbe9410fec9f1cea, type: 3}
   - {fileID: 21300000, guid: 0a6989b691b475f418d5eb488f7cca8b, type: 3}
+  gameStart: {fileID: 0}
 --- !u!4 &1049768760
 Transform:
   m_ObjectHideFlags: 0

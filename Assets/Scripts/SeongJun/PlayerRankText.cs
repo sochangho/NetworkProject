@@ -8,14 +8,14 @@ using UnityEngine.UI;
 namespace SeongJun { 
     public class PlayerRankText : MonoBehaviourPun, IPunObservable
     {
-        IEnumerator stop;
+        Coroutine stop = null;
         public int kill;
         public int ranking;
         public Sprite[] backGroundColor;
         public GameObject backGround;
         public Text playerNameText;
         public Text killText;
-        public RectTransform RT;
+        private RectTransform RT;
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
             if (stream.IsWriting)
@@ -60,20 +60,19 @@ namespace SeongJun {
         }
         public void RankUpdate()
         {
-            stop = Move();
             photonView.RPC("RankUpdateRPC", RpcTarget.All);
         }
         [PunRPC]
         public void RankUpdateRPC()
         {
-            StopCoroutine(stop);
-            StartCoroutine(Move());
+            if (stop != null) {
+                StopCoroutine(stop);
+            }
+            stop = StartCoroutine(Move());
         }
         //순위가 상승할때 호출하는 MoveUP함수와 그 반대인 MoveDown함수를 따로 만드는게 어떨까? <-이러면 순위가 자주 바뀌거나 단숨에 오를때 충돌을 일으킬 가능성이 있음. 한곳에서 관리하게 하자.
        IEnumerator Move()
         {
-            //스피드를 점점 감소시키는건 어떨까?
-            float speed = 150;
             float y = RT.anchoredPosition.y;
             //프레임에 따라서 가끔 값이 목표치보다 더 증가할 때가 있어서 가장 작은수를 저장하고 그 수가 목표치보다 적으면 종료하게 하자.
             float minDistance = 1000;
@@ -83,21 +82,28 @@ namespace SeongJun {
             {
                 if (RT.anchoredPosition.y < (-30 * ranking) - 15)
                 {
-                    //크기 크게
                     //위로 이동
-                    y += speed * 0.01f;
+                    y += 0.15f;
                 }
                 else
                 {
-                    y -= speed * 0.01f;
+                    //아래로 이동
+                    y -= 0.15f;
                 }
-
+                //변동된 y값만큼 이동
                 RT.anchoredPosition = new Vector3(-40, y, 0);
+
+                //만약을 위해 distance값이 전보다 늘어나면 바로 종료
+                if ( minDistance < Vector3.Distance(RT.anchoredPosition, new Vector3(-40, (-30 * ranking) - 15, 0)))
+                {
+                    break;
+                }
                 minDistance = Vector3.Distance(RT.anchoredPosition, new Vector3(-40, (-30 * ranking) - 15, 0));
                 yield return null;
             }
             //반복문이 끝나고 약간의 오차가 있을것을 대비하여 자신의 위치를 목표위치로 설정
             RT.anchoredPosition = new Vector3(-40, (-30 * ranking) - 15, 0);
+            stop = null;
         }
 
         public void SetText(string name)
