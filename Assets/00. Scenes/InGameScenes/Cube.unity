@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1147,7 +1147,6 @@ MonoBehaviour:
     type: 3}
   createParent: {fileID: 818565867}
   owntargetObject: {fileID: 0}
-  loading: {fileID: 1603940815}
   sprites:
   - {fileID: 21300000, guid: 2fc5d0672bc17fd4cbe9410fec9f1cea, type: 3}
   - {fileID: 21300000, guid: 0a6989b691b475f418d5eb488f7cca8b, type: 3}
@@ -1418,20 +1417,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 0fee4094818a5164184f63d856537d76,
         type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8739023330640924886, guid: 5870d935c09d9284386c4dd67943c8d2, type: 3}
+    - {fileID: 6036889100530050563, guid: 5870d935c09d9284386c4dd67943c8d2, type: 3}
+    - {fileID: 3113472898434212511, guid: 5870d935c09d9284386c4dd67943c8d2, type: 3}
+    - {fileID: 951662504986004248, guid: 5870d935c09d9284386c4dd67943c8d2, type: 3}
+    - {fileID: 8916830105294775124, guid: 5870d935c09d9284386c4dd67943c8d2, type: 3}
+    - {fileID: 3347855405688815038, guid: 5870d935c09d9284386c4dd67943c8d2, type: 3}
+    - {fileID: 7747816854658330180, guid: 5870d935c09d9284386c4dd67943c8d2, type: 3}
+    - {fileID: 4574077308390684338, guid: 5870d935c09d9284386c4dd67943c8d2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5870d935c09d9284386c4dd67943c8d2, type: 3}
---- !u!114 &1603940815 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1898001563895709194, guid: 5870d935c09d9284386c4dd67943c8d2,
-    type: 3}
-  m_PrefabInstance: {fileID: 1603940814}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0322824bcc7657418c031d2564d746e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1738571393
 GameObject:
   m_ObjectHideFlags: 0

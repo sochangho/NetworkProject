@@ -12,22 +12,6 @@ namespace Changho.UI
         public List<SelectEntry> selectEntrys;
 
 
-        private void Awake()
-        {
-            
-            //for(int i = 0; i < selectEntrys.Count; i++)
-            //{
-            //    selectEntrys[i].selectButton.onClick.AddListener(()=> {
-
-            //        selectEntrys[i].selectTex.gameObject.SetActive(false);
-                
-            //    });
-
-            //}
-
-
-        }
-
         private void Start()
         {
 

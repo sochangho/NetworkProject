@@ -11,14 +11,12 @@ namespace Changho.Lobby
     {
         private LobbyManager lobbyManager;
 
-        public RoomEntry lobbyEntry;
-        public Dictionary<string,RoomEntry> lobbyEntrys = new Dictionary<string, RoomEntry>();
+        public RoomEntry roomEntry;
+        public Dictionary<string,RoomEntry> roomEntryDic = new Dictionary<string, RoomEntry>();
 
         //Buttons
         [SerializeField]
         private Button exitBut;
-        [SerializeField]
-        private Button selectBut;
         [SerializeField]
         private Button randomBut;
         [SerializeField]
@@ -34,7 +32,6 @@ namespace Changho.Lobby
             lobbyManager = LobbyManager.Instance;
 
             exitBut.onClick.AddListener(lobbyManager.LobbyExit);
-            selectBut.onClick.AddListener(OnSelectClick);
             randomBut.onClick.AddListener(lobbyManager.RandomMatch);
             createRoomBut.onClick.AddListener(OnCreateRoomClick);
 
@@ -54,8 +51,7 @@ namespace Changho.Lobby
 
         public void ButtonsInteractable(bool value)
         {
-            exitBut.interactable = value;              
-            selectBut.interactable = value;        
+            exitBut.interactable = value;                  
             randomBut.interactable = value;
             createRoomBut.interactable = value;
         }

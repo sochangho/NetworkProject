@@ -22,12 +22,6 @@ namespace Changho.Managers
             
         }
 
-        public void Start()
-        {
-
-           
-
-        }
 
         #endregion
 
@@ -73,7 +67,7 @@ namespace Changho.Managers
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
         {
             Debug.Log("로비 업데이트");
-            Dictionary<string , RoomEntry> roomEntrys = lobby.lobbyEntrys;
+            Dictionary<string , RoomEntry> roomEntrys = lobby.roomEntryDic;
 
      
 
@@ -104,7 +98,7 @@ namespace Changho.Managers
                     }
                     else
                     {
-                        var rooGo = Instantiate(lobby.lobbyEntry);
+                        var rooGo = Instantiate(lobby.roomEntry);
                         rooGo.transform.parent = lobby.transform;
 
 

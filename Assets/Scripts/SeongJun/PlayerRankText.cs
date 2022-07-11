@@ -73,7 +73,7 @@ namespace SeongJun {
        IEnumerator Move()
         {
             //스피드를 점점 감소시키는건 어떨까?
-            float speed = 30;
+            float speed = 150;
             float y = RT.anchoredPosition.y;
             //프레임에 따라서 가끔 값이 목표치보다 더 증가할 때가 있어서 가장 작은수를 저장하고 그 수가 목표치보다 적으면 종료하게 하자.
             float minDistance = 1000;
